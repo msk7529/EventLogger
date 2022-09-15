@@ -82,8 +82,8 @@ final class LogConsoleViewController: UIViewController {
         logConsoleVC.view.addConstraint(heightConstarint)
          */
         
-        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: 200)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
-        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: 20)
+        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: Logger.minModePosition.y)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
+        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: Logger.minModePosition.x)
         view.heightAnchor.constraint(equalToConstant: 100).isActive = true
         view.widthAnchor.constraint(equalToConstant: 50).isActive = true
         
@@ -126,6 +126,8 @@ final class LogConsoleViewController: UIViewController {
             topConstraint?.constant = destFrame.minY
             leadingConstraint?.constant = destFrame.minX
             view.frame = destFrame
+        case .ended:
+            Logger.minModePosition = view.frame.origin
         default:
             return
         }
