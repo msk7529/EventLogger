@@ -20,6 +20,10 @@
 		C2FC38DB28D3119C00A69358 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DA28D3119C00A69358 /* Logger.swift */; };
 		C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DC28D3337E00A69358 /* TestViewController.swift */; };
 		C2FC38DF28D37A1400A69358 /* LogConsoleViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */; };
+		C2FC38E228D399D300A69358 /* LinkedFramesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38E128D399D300A69358 /* LinkedFramesList.swift */; };
+		C2FC38E428D399F400A69358 /* PerformanceMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38E328D399F400A69358 /* PerformanceMonitor.swift */; };
+		C2FC38E628D39A0F00A69358 /* PerformanceCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38E528D39A0F00A69358 /* PerformanceCalculator.swift */; };
+		C2FC38E828D39A9E00A69358 /* PerformanceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38E728D39A9E00A69358 /* PerformanceView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +61,10 @@
 		C2FC38DA28D3119C00A69358 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C2FC38DC28D3337E00A69358 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleViewMode.swift; sourceTree = "<group>"; };
+		C2FC38E128D399D300A69358 /* LinkedFramesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedFramesList.swift; sourceTree = "<group>"; };
+		C2FC38E328D399F400A69358 /* PerformanceMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceMonitor.swift; sourceTree = "<group>"; };
+		C2FC38E528D39A0F00A69358 /* PerformanceCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceCalculator.swift; sourceTree = "<group>"; };
+		C2FC38E728D39A9E00A69358 /* PerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +148,7 @@
 		C2FC38D628D2FC4300A69358 /* LogConsole */ = {
 			isa = PBXGroup;
 			children = (
+				C2FC38E028D399C100A69358 /* Performance */,
 				C2FC38D728D2FC4E00A69358 /* ViewController */,
 				C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */,
 				C2FC38DA28D3119C00A69358 /* Logger.swift */,
@@ -153,6 +162,17 @@
 				C2FC38D428D2FC1900A69358 /* LogConsoleViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C2FC38E028D399C100A69358 /* Performance */ = {
+			isa = PBXGroup;
+			children = (
+				C2FC38E128D399D300A69358 /* LinkedFramesList.swift */,
+				C2FC38E328D399F400A69358 /* PerformanceMonitor.swift */,
+				C2FC38E528D39A0F00A69358 /* PerformanceCalculator.swift */,
+				C2FC38E728D39A9E00A69358 /* PerformanceView.swift */,
+			);
+			path = Performance;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -288,9 +308,13 @@
 				C2FC38DF28D37A1400A69358 /* LogConsoleViewMode.swift in Sources */,
 				C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */,
 				C2FC38A928D2F9E300A69358 /* MainViewController.swift in Sources */,
+				C2FC38E228D399D300A69358 /* LinkedFramesList.swift in Sources */,
 				C2FC38DB28D3119C00A69358 /* Logger.swift in Sources */,
 				C2FC38D528D2FC1900A69358 /* LogConsoleViewController.swift in Sources */,
+				C2FC38E628D39A0F00A69358 /* PerformanceCalculator.swift in Sources */,
 				C2FC38D928D3094100A69358 /* MainWindow.swift in Sources */,
+				C2FC38E428D399F400A69358 /* PerformanceMonitor.swift in Sources */,
+				C2FC38E828D39A9E00A69358 /* PerformanceView.swift in Sources */,
 				C2FC38A528D2F9E300A69358 /* AppDelegate.swift in Sources */,
 				C2FC38A728D2F9E300A69358 /* SceneDelegate.swift in Sources */,
 			);

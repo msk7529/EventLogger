@@ -13,12 +13,10 @@ final class LogConsoleViewController: UIViewController {
     
     static let shared = LogConsoleViewController()
     
-    private let testLabel: UILabel = {
-        let label: UILabel = .init(frame: .zero)
-        label.text = "테스트"
-        label.isUserInteractionEnabled = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private let performanceView: PerformanceView = {
+        let view = PerformanceView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private var windowSize: CGSize {
@@ -39,7 +37,7 @@ final class LogConsoleViewController: UIViewController {
     
     private var viewSize: CGSize {
         if viewMode == .mini {
-            return CGSize(width: 68, height: 44)
+            return CGSize(width: miniViewWidth, height: miniViewHeight)
         } else {
             return CGSize(width: windowSize.width * CGFloat(0.7), height: windowSize.height * CGFloat(0.6))
         }
@@ -60,6 +58,9 @@ final class LogConsoleViewController: UIViewController {
     private var leadingConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     private var widthConstraint: NSLayoutConstraint?
+    
+    private let miniViewWidth: CGFloat = 100
+    private let miniViewHeight: CGFloat = 44
     
     // MARK: - Life Cycle
     
@@ -84,10 +85,11 @@ final class LogConsoleViewController: UIViewController {
     // MARK: - UI
     
     private func initView() {
-        view.addSubview(testLabel)
+        view.addSubview(performanceView)
         
-        testLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        testLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        performanceView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        performanceView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        performanceView.heightAnchor.constraint(equalToConstant: miniViewHeight).isActive = true
     }
     
     func setConstraints(with window: UIWindow) {
@@ -116,14 +118,14 @@ final class LogConsoleViewController: UIViewController {
     }
     
     private func calculateRightViewPosition(from pos: CGPoint) -> CGPoint {
-        // 로그콘솔이 화면 밖을 벗어나지 못하도록 위치를 재조정
+        // 로그콘솔이 화면 밖을 벗어나지 못하도록 위치를 재조정. expand 상태에서는 편의를 위해 화면을 벗어날 수 있도록 처리.
         var resultPos = pos
         let safeAreaInsets = safeAreaInsets
 
         resultPos.x = max(pos.x, safeAreaInsets.left)
-        resultPos.x = min(resultPos.x, windowSize.width - viewSize.width - safeAreaInsets.right)
+        resultPos.x = min(resultPos.x, windowSize.width - miniViewWidth - safeAreaInsets.right)
         resultPos.y = max(pos.y, safeAreaInsets.top)
-        resultPos.y = min(resultPos.y, windowSize.height - safeAreaInsets.bottom - viewSize.height)
+        resultPos.y = min(resultPos.y, windowSize.height - safeAreaInsets.bottom - miniViewHeight)
         return resultPos
     }
     
@@ -163,7 +165,7 @@ final class LogConsoleViewController: UIViewController {
     
     private func addGestureRecognizer() {
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didReceivePanAction(_:))))
-        testLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didReceiveTapAction(_:))))
+        performanceView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didReceiveTapAction(_:))))
     }
 
     // MARK: - Action
@@ -195,7 +197,7 @@ final class LogConsoleViewController: UIViewController {
     
     @objc
     private func didReceiveTapAction(_ sender: UITapGestureRecognizer) {
-        if sender.view === testLabel {
+        if sender.view === performanceView {
             viewMode.toggle()
         }
     }
