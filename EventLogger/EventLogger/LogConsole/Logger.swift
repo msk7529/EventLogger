@@ -12,15 +12,27 @@ final class Logger {
     
     static let shared = Logger()
     
-    static var minModePosition: CGPoint {
+    static var miniModePosition: CGPoint {
         get {
-            guard let pos = UserDefaults.standard.value(forKey: "minModePosition") as? String else {
+            guard let pos = UserDefaults.standard.value(forKey: "miniModePosition") as? String else {
                 return CGPoint(x: 20, y: 200)
             }
             return NSCoder.cgPoint(for: pos)
         }
         set {
-            UserDefaults.standard.setValue(NSCoder.string(for: newValue), forKey: "minModePosition")
+            UserDefaults.standard.setValue(NSCoder.string(for: newValue), forKey: "miniModePosition")
+        }
+    }
+    
+    static var expandModePosition: CGPoint {
+        get {
+            guard let pos = UserDefaults.standard.value(forKey: "expandModePosition") as? String else {
+                return CGPoint(x: 20, y: 200)
+            }
+            return NSCoder.cgPoint(for: pos)
+        }
+        set {
+            UserDefaults.standard.setValue(NSCoder.string(for: newValue), forKey: "expandModePosition")
         }
     }
     

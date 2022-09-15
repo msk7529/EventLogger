@@ -16,6 +16,7 @@ final class LogConsoleViewController: UIViewController {
     private let testLabel: UILabel = {
         let label: UILabel = .init(frame: .zero)
         label.text = "테스트"
+        label.isUserInteractionEnabled = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -36,9 +37,29 @@ final class LogConsoleViewController: UIViewController {
         return safeAreaInsets
     }
     
+    private var viewSize: CGSize {
+        if viewMode == .mini {
+            return CGSize(width: 68, height: 44)
+        } else {
+            return CGSize(width: windowSize.width * CGFloat(0.7), height: windowSize.height * CGFloat(0.6))
+        }
+    }
+    
+    private var viewMode: LogConsoleViewMode = .mini {
+        didSet {
+            if viewMode == .mini {
+                minimize()
+            } else if viewMode == .expanded {
+                expand()
+            }
+        }
+    }
+    
     private var currentFrame: CGRect?
-    var topConstraint: NSLayoutConstraint?
-    var leadingConstraint: NSLayoutConstraint?
+    private var topConstraint: NSLayoutConstraint?
+    private var leadingConstraint: NSLayoutConstraint?
+    private var heightConstraint: NSLayoutConstraint?
+    private var widthConstraint: NSLayoutConstraint?
     
     // MARK: - Life Cycle
     
@@ -53,7 +74,7 @@ final class LogConsoleViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         
         initView()
-        addRecognizers()
+        addGestureRecognizer()
     }
     
     override func viewDidLayoutSubviews() {
@@ -82,13 +103,15 @@ final class LogConsoleViewController: UIViewController {
         logConsoleVC.view.addConstraint(heightConstarint)
          */
         
-        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: Logger.minModePosition.y)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
-        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: Logger.minModePosition.x)
-        view.heightAnchor.constraint(equalToConstant: 100).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: Logger.miniModePosition.y)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
+        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: Logger.miniModePosition.x)
+        heightConstraint = view.heightAnchor.constraint(equalToConstant: viewSize.height)
+        widthConstraint = view.widthAnchor.constraint(equalToConstant: viewSize.width)
         
-        topConstraint?.isActive = true
-        leadingConstraint?.isActive = true
+        [topConstraint, leadingConstraint, heightConstraint, widthConstraint].forEach {
+            $0?.isActive = true
+        }
+
         // window.bringSubviewToFront(LogConsoleVC.view)
     }
     
@@ -98,16 +121,49 @@ final class LogConsoleViewController: UIViewController {
         let safeAreaInsets = safeAreaInsets
 
         resultPos.x = max(pos.x, safeAreaInsets.left)
-        resultPos.x = min(resultPos.x, windowSize.width - 50 - safeAreaInsets.right)
+        resultPos.x = min(resultPos.x, windowSize.width - viewSize.width - safeAreaInsets.right)
         resultPos.y = max(pos.y, safeAreaInsets.top)
-        resultPos.y = min(resultPos.y, windowSize.height - safeAreaInsets.bottom - 100)
+        resultPos.y = min(resultPos.y, windowSize.height - safeAreaInsets.bottom - viewSize.height)
         return resultPos
+    }
+    
+    private func minimize() {
+        UIView.animate(withDuration: 0.2) {
+            guard let superView = self.view.superview else { return }
+            
+            let pos = Logger.miniModePosition
+
+            self.leadingConstraint?.constant = pos.x
+            self.topConstraint?.constant = pos.y
+            self.heightConstraint?.constant = self.viewSize.height
+            self.widthConstraint?.constant = self.viewSize.width
+            superView.layoutIfNeeded()  // 미호출시 애니메이션 적용 안 됨
+        } completion: { _ in
+            
+        }
+    }
+    
+    private func expand() {
+        UIView.animate(withDuration: 0.2) {
+            guard let superView = self.view.superview else { return }
+            
+            let pos = Logger.expandModePosition
+            
+            self.leadingConstraint?.constant = pos.x
+            self.topConstraint?.constant = pos.y
+            self.heightConstraint?.constant = self.viewSize.height
+            self.widthConstraint?.constant = self.viewSize.width
+            superView.layoutIfNeeded()  // 미호출시 애니메이션 적용 안 됨
+        } completion: { _ in
+            
+        }
     }
     
     // MARK: - Helper
     
-    private func addRecognizers() {
+    private func addGestureRecognizer() {
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didReceivePanAction(_:))))
+        testLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didReceiveTapAction(_:))))
     }
 
     // MARK: - Action
@@ -127,9 +183,20 @@ final class LogConsoleViewController: UIViewController {
             leadingConstraint?.constant = destFrame.minX
             view.frame = destFrame
         case .ended:
-            Logger.minModePosition = view.frame.origin
+            if viewMode == .mini {
+                Logger.miniModePosition = view.frame.origin
+            } else if viewMode == .expanded {
+                Logger.expandModePosition = view.frame.origin
+            }
         default:
             return
+        }
+    }
+    
+    @objc
+    private func didReceiveTapAction(_ sender: UITapGestureRecognizer) {
+        if sender.view === testLabel {
+            viewMode.toggle()
         }
     }
 }

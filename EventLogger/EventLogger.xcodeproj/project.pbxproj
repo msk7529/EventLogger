@@ -19,6 +19,7 @@
 		C2FC38D928D3094100A69358 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38D828D3094100A69358 /* MainWindow.swift */; };
 		C2FC38DB28D3119C00A69358 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DA28D3119C00A69358 /* Logger.swift */; };
 		C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DC28D3337E00A69358 /* TestViewController.swift */; };
+		C2FC38DF28D37A1400A69358 /* LogConsoleViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		C2FC38D828D3094100A69358 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
 		C2FC38DA28D3119C00A69358 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C2FC38DC28D3337E00A69358 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleViewMode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				C2FC38D728D2FC4E00A69358 /* ViewController */,
+				C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */,
 				C2FC38DA28D3119C00A69358 /* Logger.swift */,
 			);
 			path = LogConsole;
@@ -282,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2FC38DF28D37A1400A69358 /* LogConsoleViewMode.swift in Sources */,
 				C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */,
 				C2FC38A928D2F9E300A69358 /* MainViewController.swift in Sources */,
 				C2FC38DB28D3119C00A69358 /* Logger.swift in Sources */,
