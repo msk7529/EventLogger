@@ -18,6 +18,7 @@
 		C2FC38D528D2FC1900A69358 /* LogConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38D428D2FC1900A69358 /* LogConsoleViewController.swift */; };
 		C2FC38D928D3094100A69358 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38D828D3094100A69358 /* MainWindow.swift */; };
 		C2FC38DB28D3119C00A69358 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DA28D3119C00A69358 /* Logger.swift */; };
+		C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DC28D3337E00A69358 /* TestViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		C2FC38D428D2FC1900A69358 /* LogConsoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleViewController.swift; sourceTree = "<group>"; };
 		C2FC38D828D3094100A69358 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
 		C2FC38DA28D3119C00A69358 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		C2FC38DC28D3337E00A69358 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				C2FC38A628D2F9E300A69358 /* SceneDelegate.swift */,
 				C2FC38D828D3094100A69358 /* MainWindow.swift */,
 				C2FC38A828D2F9E300A69358 /* MainViewController.swift */,
+				C2FC38DC28D3337E00A69358 /* TestViewController.swift */,
 				C2FC38D628D2FC4300A69358 /* LogConsole */,
 				C2FC38AD28D2F9E400A69358 /* Assets.xcassets */,
 				C2FC38AF28D2F9E400A69358 /* LaunchScreen.storyboard */,
@@ -279,6 +282,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */,
 				C2FC38A928D2F9E300A69358 /* MainViewController.swift in Sources */,
 				C2FC38DB28D3119C00A69358 /* Logger.swift in Sources */,
 				C2FC38D528D2FC1900A69358 /* LogConsoleViewController.swift in Sources */,

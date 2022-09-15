@@ -2,7 +2,7 @@
 //  MainWindow.swift
 //  EventLogger
 //
-//  Created by kakao on 2022/09/15.
+//  Created by on 2022/09/15.
 //
 
 import UIKit
