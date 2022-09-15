@@ -37,6 +37,8 @@ final class LogConsoleViewController: UIViewController {
     }
     
     private var currentFrame: CGRect?
+    var topConstraint: NSLayoutConstraint?
+    var leadingConstraint: NSLayoutConstraint?
     
     // MARK: - Life Cycle
     
@@ -54,6 +56,10 @@ final class LogConsoleViewController: UIViewController {
         addRecognizers()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
+    
     // MARK: - UI
     
     private func initView() {
@@ -61,6 +67,29 @@ final class LogConsoleViewController: UIViewController {
         
         testLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         testLabel.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+    }
+    
+    func setConstraints(with window: UIWindow) {
+        /*
+        let topConstraint = NSLayoutConstraint(item: logConsoleVC.view as Any, attribute: .top, relatedBy: .equal, toItem: logConsoleVC.view.superview, attribute: .top, multiplier: 1, constant: 30)
+        let leadingConstraint = NSLayoutConstraint(item: logConsoleVC.view as Any, attribute: .leading, relatedBy: .equal, toItem: logConsoleVC.view.superview, attribute: .leading, multiplier: 1, constant: 10)
+        let widthConstarint = NSLayoutConstraint(item: logConsoleVC.view as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50)
+        let heightConstarint = NSLayoutConstraint(item: logConsoleVC.view as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100)
+        window.addConstraint(leadingConstraint)
+        window.addConstraint(topConstraint)
+
+        logConsoleVC.view.addConstraint(widthConstarint)
+        logConsoleVC.view.addConstraint(heightConstarint)
+         */
+        
+        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: 200)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
+        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: 20)
+        view.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        topConstraint?.isActive = true
+        leadingConstraint?.isActive = true
+        // window.bringSubviewToFront(LogConsoleVC.view)
     }
     
     private func calculateRightViewPosition(from pos: CGPoint) -> CGPoint {
@@ -94,6 +123,8 @@ final class LogConsoleViewController: UIViewController {
             let offset = sender.translation(in: view.superview)
             var destFrame = currentFrame.offsetBy(dx: offset.x, dy: offset.y)
             destFrame.origin = calculateRightViewPosition(from: destFrame.origin)
+            topConstraint?.constant = destFrame.minY
+            leadingConstraint?.constant = destFrame.minX
             view.frame = destFrame
         default:
             return
