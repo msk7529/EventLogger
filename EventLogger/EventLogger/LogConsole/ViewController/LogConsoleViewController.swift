@@ -13,10 +13,22 @@ final class LogConsoleViewController: UIViewController {
     
     static let shared = LogConsoleViewController()
     
+    private enum Section {
+        case main
+    }
+    
     private let performanceView: PerformanceView = {
         let view = PerformanceView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
+    }()
+    
+    private lazy var logTableView: UITableView = {
+        let tableView = UITableView(frame: .zero)
+        tableView.delegate = self
+        tableView.register(LogConsoleTableViewCell.self, forCellReuseIdentifier: LogConsoleTableViewCell.identifier)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        return tableView
     }()
     
     private var windowSize: CGSize {
@@ -62,6 +74,8 @@ final class LogConsoleViewController: UIViewController {
     private let miniViewWidth: CGFloat = 100
     private let miniViewHeight: CGFloat = 44
     
+    private var dataSource: UITableViewDiffableDataSource<Section, LogConsoleMessage>!
+    
     // MARK: - Life Cycle
     
     deinit {
@@ -71,10 +85,13 @@ final class LogConsoleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.layer.borderWidth = 0.5
+        view.layer.borderColor = UIColor.black.cgColor
         view.backgroundColor = .red
         view.translatesAutoresizingMaskIntoConstraints = false
         
         initView()
+        initTableView()
         addGestureRecognizer()
     }
     
@@ -86,10 +103,34 @@ final class LogConsoleViewController: UIViewController {
     
     private func initView() {
         view.addSubview(performanceView)
+        view.addSubview(logTableView)
         
         performanceView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         performanceView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         performanceView.heightAnchor.constraint(equalToConstant: miniViewHeight).isActive = true
+        
+        logTableView.topAnchor.constraint(equalTo: performanceView.bottomAnchor).isActive = true
+        logTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        logTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        logTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    private func initTableView() {
+        dataSource = .init(tableView: logTableView, cellProvider: { tableView, indexPath, itemIdentifier in
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LogConsoleTableViewCell.identifier, for: indexPath) as? LogConsoleTableViewCell else {
+                return UITableViewCell()
+            }
+            
+            cell.message = itemIdentifier
+            return cell
+        })
+        
+        logTableView.dataSource = dataSource
+        
+        var snapShot = NSDiffableDataSourceSnapshot<Section, LogConsoleMessage>()
+        snapShot.appendSections([.main])
+        snapShot.appendItems([LogConsoleMessage(message: "test")])
+        dataSource.apply(snapShot)
     }
     
     func setConstraints(with window: UIWindow) {
@@ -200,5 +241,11 @@ final class LogConsoleViewController: UIViewController {
         if sender.view === performanceView {
             viewMode.toggle()
         }
+    }
+}
+
+extension LogConsoleViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 30
     }
 }
