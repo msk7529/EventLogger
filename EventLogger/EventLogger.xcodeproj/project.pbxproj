@@ -38,6 +38,7 @@
 		C7161B0D28E6EB1A00A941D1 /* BaseLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0C28E6EB1A00A941D1 /* BaseLogFormatter.swift */; };
 		C7161B0F28E6EC1300A941D1 /* DefaultLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */; };
 		C7161B1128E7576C00A941D1 /* LogConsoleTopContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */; };
+		C7161B1328E773CE00A941D1 /* LogConsoleBottomContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B1228E773CE00A941D1 /* LogConsoleBottomContainerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		C7161B0C28E6EB1A00A941D1 /* BaseLogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLogFormatter.swift; sourceTree = "<group>"; };
 		C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLogFormatter.swift; sourceTree = "<group>"; };
 		C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleTopContainerView.swift; sourceTree = "<group>"; };
+		C7161B1228E773CE00A941D1 /* LogConsoleBottomContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleBottomContainerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 			children = (
 				C7161AF628E625DB00A941D1 /* LogConsoleTableViewCell.swift */,
 				C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */,
+				C7161B1228E773CE00A941D1 /* LogConsoleBottomContainerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				C7161AFC28E6BA7500A941D1 /* Logger.swift in Sources */,
 				C2FC38E428D399F400A69358 /* PerformanceMonitor.swift in Sources */,
 				C7161B0A28E6E84D00A941D1 /* LumberJackManager.swift in Sources */,
+				C7161B1328E773CE00A941D1 /* LogConsoleBottomContainerView.swift in Sources */,
 				C2FC38E828D39A9E00A69358 /* PerformanceView.swift in Sources */,
 				C7161B0028E6BAC200A941D1 /* Logger+Helper.swift in Sources */,
 				C7161B0428E6BAED00A941D1 /* LogCategory.swift in Sources */,

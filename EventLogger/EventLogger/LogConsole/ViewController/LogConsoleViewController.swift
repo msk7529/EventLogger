@@ -17,15 +17,10 @@ final class LogConsoleViewController: UIViewController {
         case main
     }
     
-    private let performanceView: PerformanceView = {
-        let view = PerformanceView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let topContainerView: LogConsoleTopContainerView = {
         let view = LogConsoleTopContainerView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -34,8 +29,19 @@ final class LogConsoleViewController: UIViewController {
         tableView.delegate = self
         tableView.register(LogConsoleTableViewCell.self, forCellReuseIdentifier: LogConsoleTableViewCell.identifier)
         tableView.separatorStyle = .none
+        tableView.isHidden = true
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
+    }()
+    
+    private lazy var bottomContainerView: LogConsoleBottomContainerView = {
+        let view = LogConsoleBottomContainerView()
+        view.isHidden = true
+        view.didTapButton = { [weak self] buttonType in
+            self?.didTapBottomContainerButton(buttonType: buttonType)
+        }
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private var windowSize: CGSize {
@@ -102,6 +108,8 @@ final class LogConsoleViewController: UIViewController {
     private var heightConstraint: NSLayoutConstraint?
     private var widthConstraint: NSLayoutConstraint?
     
+    private var tableViewBottomConstraint: NSLayoutConstraint?
+    
     private let miniViewWidth: CGFloat = 100
     private let miniViewHeight: CGFloat = 44
     
@@ -135,21 +143,23 @@ final class LogConsoleViewController: UIViewController {
     private func initView() {
         view.addSubview(topContainerView)
         view.addSubview(logTableView)
-        topContainerView.addSubview(performanceView)
+        view.addSubview(bottomContainerView)
         
         topContainerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         topContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         topContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         topContainerView.heightAnchor.constraint(equalToConstant: miniViewHeight).isActive = true
         
-        performanceView.topAnchor.constraint(equalTo: topContainerView.topAnchor).isActive = true
-        performanceView.leadingAnchor.constraint(equalTo: topContainerView.leadingAnchor).isActive = true
-        performanceView.heightAnchor.constraint(equalTo: topContainerView.heightAnchor).isActive = true
-        
-        logTableView.topAnchor.constraint(equalTo: performanceView.bottomAnchor).isActive = true
+        logTableView.topAnchor.constraint(equalTo: topContainerView.bottomAnchor).isActive = true
         logTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         logTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        logTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableViewBottomConstraint = logTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        tableViewBottomConstraint?.isActive = true
+        
+        bottomContainerView.topAnchor.constraint(equalTo: logTableView.bottomAnchor).isActive = true
+        bottomContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        bottomContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        bottomContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     private func initTableView() {
@@ -216,6 +226,9 @@ final class LogConsoleViewController: UIViewController {
             self.topConstraint?.constant = pos.y
             self.heightConstraint?.constant = self.viewSize.height
             self.widthConstraint?.constant = self.viewSize.width
+            self.tableViewBottomConstraint?.constant = 0
+            self.logTableView.isHidden = true
+            self.bottomContainerView.isHidden = true
             superView.layoutIfNeeded()  // 미호출시 애니메이션 적용 안 됨
         } completion: { _ in
             
@@ -232,6 +245,9 @@ final class LogConsoleViewController: UIViewController {
             self.topConstraint?.constant = pos.y
             self.heightConstraint?.constant = self.viewSize.height
             self.widthConstraint?.constant = self.viewSize.width
+            self.tableViewBottomConstraint?.constant = -self.miniViewHeight
+            self.logTableView.isHidden = false
+            self.bottomContainerView.isHidden = false
             superView.layoutIfNeeded()  // 미호출시 애니메이션 적용 안 됨
         } completion: { _ in
             
@@ -242,7 +258,7 @@ final class LogConsoleViewController: UIViewController {
     
     private func addGestureRecognizer() {
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didReceivePanAction(_:))))
-        performanceView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didReceiveTapAction(_:))))
+        topContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didReceiveTapAction(_:))))
     }
     
     func addLogs(logs: [LogConsoleMessage]) {
@@ -296,8 +312,18 @@ final class LogConsoleViewController: UIViewController {
     
     @objc
     private func didReceiveTapAction(_ sender: UITapGestureRecognizer) {
-        if sender.view === performanceView {
+        if sender.view === topContainerView {
             viewMode.toggle()
+        }
+    }
+    
+    private func didTapBottomContainerButton(buttonType: LogConsoleBottomContainerView.ButtonType) {
+        switch buttonType {
+        case .clear:
+            var snapShot = dataSource.snapshot()
+            snapShot.deleteAllItems()
+            snapShot.appendSections([.main])
+            dataSource.apply(snapShot)
         }
     }
 }

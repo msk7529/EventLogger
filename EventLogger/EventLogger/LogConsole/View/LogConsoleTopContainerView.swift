@@ -7,9 +7,16 @@ import UIKit
 
 final class LogConsoleTopContainerView: UIView {
     
+    private let performanceView: PerformanceView = {
+        let view = PerformanceView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
+        backgroundColor = .gray
         initView()
     }
     
@@ -25,6 +32,10 @@ final class LogConsoleTopContainerView: UIView {
     }
     
     private func initView() {
-        backgroundColor = .gray
+        addSubview(performanceView)
+        
+        performanceView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        performanceView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        performanceView.heightAnchor.constraint(equalTo: heightAnchor).isActive = true
     }
 }

@@ -89,6 +89,8 @@ final class PerformanceView: UIView, PerformanceMonitorDelegate {
         return "\(systemName) v\(systemVersion)"
     }
     
+    private let borderWidth: CGFloat = 2
+    
     private var performanceReportSubject: PassthroughSubject<PerformanceReport, Never> = .init()
     private var subscriptions: Set<AnyCancellable> = .init()
     
@@ -114,7 +116,7 @@ final class PerformanceView: UIView, PerformanceMonitorDelegate {
         super.layoutSubviews()
         
         layer.backgroundColor = UIColor.black.cgColor
-        layer.borderWidth = 2
+        layer.borderWidth = borderWidth
     }
     
     override func draw(_ rect: CGRect) {
@@ -141,7 +143,7 @@ final class PerformanceView: UIView, PerformanceMonitorDelegate {
             context.move(to: CGPoint(x: index, y: Int(frame.height)))
             let viewHeight = frame.height
             let posY = min(Int(viewHeight - 2), Int(viewHeight - round(viewHeight * CGFloat(report.cpuUsage / 100))))
-            context.addLine(to: CGPoint(x: index, y: posY))
+            context.addLine(to: CGPoint(x: index, y: posY - Int(borderWidth)))
             context.strokePath()
         }
     }
