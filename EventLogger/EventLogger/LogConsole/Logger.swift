@@ -1,5 +1,5 @@
 //
-//  Logger.swift
+//  LoggerManager.swift
 //  EventLogger
 //
 //  Created by on 2022/09/15.
@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-final class Logger {
+final class LoggerManager {
     
-    static let shared = Logger()
+    static let shared = LoggerManager()
     
     static var miniModePosition: CGPoint {
         get {

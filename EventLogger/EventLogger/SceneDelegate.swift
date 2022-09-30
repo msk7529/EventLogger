@@ -12,7 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow? {
         didSet {
             guard let window = window else { return }
-            Logger.start(with: window)
+            LoggerManager.start(with: window)
         }
     }
 
