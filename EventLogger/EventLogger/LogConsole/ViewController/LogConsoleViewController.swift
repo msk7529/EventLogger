@@ -23,10 +23,17 @@ final class LogConsoleViewController: UIViewController {
         return view
     }()
     
+    private let topContainerView: LogConsoleTopContainerView = {
+        let view = LogConsoleTopContainerView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
     private lazy var logTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.delegate = self
         tableView.register(LogConsoleTableViewCell.self, forCellReuseIdentifier: LogConsoleTableViewCell.identifier)
+        tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -109,9 +116,9 @@ final class LogConsoleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.layer.borderWidth = 0.5
+        view.layer.borderWidth = 2
         view.layer.borderColor = UIColor.black.cgColor
-        view.backgroundColor = .red
+        view.backgroundColor = .white
         view.translatesAutoresizingMaskIntoConstraints = false
         
         initView()
@@ -126,12 +133,18 @@ final class LogConsoleViewController: UIViewController {
     // MARK: - UI
     
     private func initView() {
-        view.addSubview(performanceView)
+        view.addSubview(topContainerView)
         view.addSubview(logTableView)
+        topContainerView.addSubview(performanceView)
         
-        performanceView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        performanceView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        performanceView.heightAnchor.constraint(equalToConstant: miniViewHeight).isActive = true
+        topContainerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        topContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        topContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        topContainerView.heightAnchor.constraint(equalToConstant: miniViewHeight).isActive = true
+        
+        performanceView.topAnchor.constraint(equalTo: topContainerView.topAnchor).isActive = true
+        performanceView.leadingAnchor.constraint(equalTo: topContainerView.leadingAnchor).isActive = true
+        performanceView.heightAnchor.constraint(equalTo: topContainerView.heightAnchor).isActive = true
         
         logTableView.topAnchor.constraint(equalTo: performanceView.bottomAnchor).isActive = true
         logTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -153,7 +166,6 @@ final class LogConsoleViewController: UIViewController {
         
         var snapShot = NSDiffableDataSourceSnapshot<Section, LogConsoleMessage>()
         snapShot.appendSections([.main])
-        snapShot.appendItems([LogConsoleMessage(message: "test")])
         dataSource.apply(snapShot)
     }
     
@@ -232,6 +244,17 @@ final class LogConsoleViewController: UIViewController {
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didReceivePanAction(_:))))
         performanceView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didReceiveTapAction(_:))))
     }
+    
+    func addLogs(logs: [LogConsoleMessage]) {
+        guard LogConsole.isRunning else {
+            Logger.xcode.errorLog("LogConsole is not running!!")
+            return
+        }
+        
+        var snapshot = dataSource.snapshot()
+        snapshot.appendItems(logs)
+        dataSource.apply(snapshot)
+    }
 
     // MARK: - Action
     
@@ -270,6 +293,6 @@ final class LogConsoleViewController: UIViewController {
 
 extension LogConsoleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 30
+        return LogConsoleTableViewCell.height
     }
 }

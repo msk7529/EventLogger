@@ -37,6 +37,7 @@
 		C7161B0A28E6E84D00A941D1 /* LumberJackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0928E6E84D00A941D1 /* LumberJackManager.swift */; };
 		C7161B0D28E6EB1A00A941D1 /* BaseLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0C28E6EB1A00A941D1 /* BaseLogFormatter.swift */; };
 		C7161B0F28E6EC1300A941D1 /* DefaultLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */; };
+		C7161B1128E7576C00A941D1 /* LogConsoleTopContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		C7161B0928E6E84D00A941D1 /* LumberJackManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LumberJackManager.swift; sourceTree = "<group>"; };
 		C7161B0C28E6EB1A00A941D1 /* BaseLogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseLogFormatter.swift; sourceTree = "<group>"; };
 		C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLogFormatter.swift; sourceTree = "<group>"; };
+		C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleTopContainerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				C7161AF628E625DB00A941D1 /* LogConsoleTableViewCell.swift */,
+				C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -383,6 +386,7 @@
 				C2FC38E228D399D300A69358 /* LinkedFramesList.swift in Sources */,
 				C2FC38DB28D3119C00A69358 /* LogConsole.swift in Sources */,
 				C7161AFE28E6BA9B00A941D1 /* Loggable.swift in Sources */,
+				C7161B1128E7576C00A941D1 /* LogConsoleTopContainerView.swift in Sources */,
 				C7161AF728E625DB00A941D1 /* LogConsoleTableViewCell.swift in Sources */,
 				C2FC38D528D2FC1900A69358 /* LogConsoleViewController.swift in Sources */,
 				C7161B0828E6C72B00A941D1 /* CustomDDOSLogger.swift in Sources */,

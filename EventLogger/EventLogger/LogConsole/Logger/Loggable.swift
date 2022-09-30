@@ -26,15 +26,6 @@ enum LogType {
                                          .error: .error]
         return map[self] ?? .error
     }
-
-    var logconsoleFlag: Int {
-        let map: [LogType: Int] = [.verbose: 16,
-                                   .debug: 8,
-                                   .info: 4,
-                                   .warning: 2,
-                                   .error: 1]
-        return map[self] ?? 1
-    }
 }
 
 struct LogOutputMask: OptionSet {

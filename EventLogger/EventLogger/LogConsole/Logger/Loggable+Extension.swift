@@ -31,10 +31,11 @@ extension Loggable {
                           asynchronous: false,
                           ddlog: DDLog.sharedInstance)
         }
-        /* if output.contains(.logconsole) {
-            Property.deviceHelper.consoleLog(messageString, type.logconsoleFlag, String(describing: file), String(describing: function), line)
-        } */
-
+        
+        if output.contains(.logconsole) {
+            let log = LogConsoleMessage(message: messageString, logType: type, fileName: String(describing: file), fileLine: line, functionName: String(describing: function))
+            LogConsole.addLog(log: log)
+        }
     }
     
     static func verboseLog(output: LogOutputMask = .all,

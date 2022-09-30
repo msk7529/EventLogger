@@ -110,6 +110,13 @@ final class PerformanceView: UIView, PerformanceMonitorDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        layer.backgroundColor = UIColor.black.cgColor
+        layer.borderWidth = 2
+    }
+    
     override func draw(_ rect: CGRect) {
         
         guard let context = UIGraphicsGetCurrentContext() else {
