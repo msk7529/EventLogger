@@ -146,8 +146,8 @@ final class LogConsoleViewController: UIViewController {
         logConsoleVC.view.addConstraint(heightConstarint)
          */
         
-        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: LoggerManager.miniModePosition.y)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
-        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: LoggerManager.miniModePosition.x)
+        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: LogConsoleManager.miniModePosition.y)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
+        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: LogConsoleManager.miniModePosition.x)
         heightConstraint = view.heightAnchor.constraint(equalToConstant: viewSize.height)
         widthConstraint = view.widthAnchor.constraint(equalToConstant: viewSize.width)
         
@@ -174,7 +174,7 @@ final class LogConsoleViewController: UIViewController {
         UIView.animate(withDuration: 0.2) {
             guard let superView = self.view.superview else { return }
             
-            let pos = LoggerManager.miniModePosition
+            let pos = LogConsoleManager.miniModePosition
 
             self.leadingConstraint?.constant = pos.x
             self.topConstraint?.constant = pos.y
@@ -190,7 +190,7 @@ final class LogConsoleViewController: UIViewController {
         UIView.animate(withDuration: 0.2) {
             guard let superView = self.view.superview else { return }
             
-            let pos = LoggerManager.expandModePosition
+            let pos = LogConsoleManager.expandModePosition
             
             self.leadingConstraint?.constant = pos.x
             self.topConstraint?.constant = pos.y
@@ -227,9 +227,9 @@ final class LogConsoleViewController: UIViewController {
             view.frame = destFrame
         case .ended:
             if viewMode == .mini {
-                LoggerManager.miniModePosition = view.frame.origin
+                LogConsoleManager.miniModePosition = view.frame.origin
             } else if viewMode == .expanded {
-                LoggerManager.expandModePosition = view.frame.origin
+                LogConsoleManager.expandModePosition = view.frame.origin
             }
         default:
             return

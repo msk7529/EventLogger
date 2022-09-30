@@ -12,7 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow? {
         didSet {
             guard let window = window else { return }
-            LoggerManager.start(with: window)
+            LogConsoleManager.shared.start(with: window)
         }
     }
 
@@ -27,6 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window.makeKeyAndVisible()
             self.window = window
         }
+        
+        let lumberJackManager = LumberJackManager()
+        lumberJackManager.setUpCocoaLumberJackLogger()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -56,7 +59,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
 

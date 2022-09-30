@@ -14,6 +14,6 @@ final class MainWindow: UIWindow {
         
         print("MainWindow didAddSubview.. \(subview)")
         
-        LoggerManager.bringToFront(window: self)   // MainWindow에 뷰가 attach 될 때마다 로그콘솔을 맨 앞으로 가져온다.
+        LogConsoleManager.bringToFront(window: self)   // MainWindow에 뷰가 attach 될 때마다 로그콘솔을 맨 앞으로 가져온다.
     }
 }

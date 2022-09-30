@@ -1,16 +1,15 @@
 //
-//  LoggerManager.swift
+//  LogConsoleManager.swift
 //  EventLogger
 //
-//  Created by on 2022/09/15.
-//
 
+import CocoaLumberjackSwift
 import Foundation
 import UIKit
 
-final class LoggerManager {
+final class LogConsoleManager {
     
-    static let shared = LoggerManager()
+    static let shared = LogConsoleManager()
     
     static var miniModePosition: CGPoint {
         get {
@@ -40,7 +39,7 @@ final class LoggerManager {
         
     }
     
-    static func start(with window: UIWindow) {
+    func start(with window: UIWindow) {
         let logConsoleVC = LogConsoleViewController.shared  // MainWindow에 addSubview후 deinit 되지 않도록 싱글턴으로 생성
         window.addSubview(logConsoleVC.view)
         

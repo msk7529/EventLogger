@@ -47,26 +47,13 @@ final class MainViewController: UIViewController {
         
         initView()
         setNavigationBar()
-        
-        /*
-        DDLog.add(DDOSLogger.sharedInstance) // Uses os_log
-        DDTTYLogger.sharedInstance?.colorsEnabled = true
-
-        let fileLogger: DDFileLogger = DDFileLogger() // File Logger
-        fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
-        fileLogger.logFileManager.maximumNumberOfLogFiles = 7
-        DDLog.add(fileLogger)
-
-        DDLogVerbose("Verbose 😶")
-        DDLogDebug("Debug")
-        DDLogInfo("Info")
-        DDLogWarn("Warn")
-        DDLogError("Error")
-        */
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        Logger.xcode.log("xcode only message")
+        Logger.test.log("category test message")
     }
     
     private func initView() {
