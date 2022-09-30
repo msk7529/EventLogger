@@ -22,7 +22,7 @@ extension Loggable {
             // level이 flag 높으면 xcode 콘솔에 노출되지 않음.
             _DDLogMessage(messageString,
                           level: .verbose,
-                          flag: type.lumberjackFlag,    // info 이상부터 콘솔앱에 찍힘.
+                          flag: type.lumberjackFlag,
                           context: 1,
                           file: file,
                           function: function,

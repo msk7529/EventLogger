@@ -12,6 +12,8 @@ final class LumberJackManager {
         DDLog.removeAllLoggers()
         
         let osLogger = CustomDDOSLogger()
+        let osLogFormatter = DefaultLogFormatter()
+        osLogger.logFormatter = osLogFormatter
         DDLog.add(osLogger, with: .debug)
         
         let fileLogger: DDFileLogger = DDFileLogger() // File Logger
