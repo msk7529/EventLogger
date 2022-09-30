@@ -253,7 +253,18 @@ final class LogConsoleViewController: UIViewController {
         
         var snapshot = dataSource.snapshot()
         snapshot.appendItems(logs)
-        dataSource.apply(snapshot)
+        dataSource.apply(snapshot, animatingDifferences: true)
+        
+        setContentOffsetProperty()
+    }
+    
+    private func setContentOffsetProperty() {
+        if logTableView.frame.size.height <= logTableView.contentSize.height {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                let currentOffset = self.logTableView.contentOffset
+                self.logTableView.setContentOffset(CGPoint(x: currentOffset.x, y: currentOffset.y + LogConsoleTableViewCell.height), animated: true)
+            }
+        }
     }
 
     // MARK: - Action
