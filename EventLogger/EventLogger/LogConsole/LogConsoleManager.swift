@@ -35,6 +35,8 @@ final class LogConsoleManager {
         }
     }
     
+    var isRunning: Bool = false
+    
     private init() {
         
     }

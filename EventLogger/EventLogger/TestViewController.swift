@@ -32,6 +32,8 @@ final class TestViewController: UIViewController {
         view.backgroundColor = .green
         
         initView()
+        
+        Logger.verboseLog("verboseLog test")
     }
     
     private func initView() {

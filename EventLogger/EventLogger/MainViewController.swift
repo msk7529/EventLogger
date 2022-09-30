@@ -47,13 +47,15 @@ final class MainViewController: UIViewController {
         
         initView()
         setNavigationBar()
+        
+        Logger.test.infoLog("test category infoLog test")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        Logger.xcode.log("xcode only message")
-        Logger.test.log("category test message")
+        Logger.xcode.debugLog("xcode only debugLog test")
+        Logger.logconsole.errorLog("logconsole only errorLog test")
     }
     
     private func initView() {
