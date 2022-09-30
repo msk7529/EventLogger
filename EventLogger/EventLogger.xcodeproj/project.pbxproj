@@ -17,7 +17,7 @@
 		C2FC38C828D2F9E500A69358 /* EventLoggerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38C728D2F9E500A69358 /* EventLoggerUITestsLaunchTests.swift */; };
 		C2FC38D528D2FC1900A69358 /* LogConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38D428D2FC1900A69358 /* LogConsoleViewController.swift */; };
 		C2FC38D928D3094100A69358 /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38D828D3094100A69358 /* MainWindow.swift */; };
-		C2FC38DB28D3119C00A69358 /* LogConsoleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DA28D3119C00A69358 /* LogConsoleManager.swift */; };
+		C2FC38DB28D3119C00A69358 /* LogConsole.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DA28D3119C00A69358 /* LogConsole.swift */; };
 		C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DC28D3337E00A69358 /* TestViewController.swift */; };
 		C2FC38DF28D37A1400A69358 /* LogConsoleViewMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */; };
 		C2FC38E228D399D300A69358 /* LinkedFramesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2FC38E128D399D300A69358 /* LinkedFramesList.swift */; };
@@ -71,7 +71,7 @@
 		C2FC38C728D2F9E500A69358 /* EventLoggerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventLoggerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C2FC38D428D2FC1900A69358 /* LogConsoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleViewController.swift; sourceTree = "<group>"; };
 		C2FC38D828D3094100A69358 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
-		C2FC38DA28D3119C00A69358 /* LogConsoleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleManager.swift; sourceTree = "<group>"; };
+		C2FC38DA28D3119C00A69358 /* LogConsole.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsole.swift; sourceTree = "<group>"; };
 		C2FC38DC28D3337E00A69358 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleViewMode.swift; sourceTree = "<group>"; };
 		C2FC38E128D399D300A69358 /* LinkedFramesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedFramesList.swift; sourceTree = "<group>"; };
@@ -179,8 +179,8 @@
 				C2FC38E028D399C100A69358 /* Performance */,
 				C2FC38D728D2FC4E00A69358 /* ViewController */,
 				C7161AF528E625BB00A941D1 /* View */,
+				C2FC38DA28D3119C00A69358 /* LogConsole.swift */,
 				C2FC38DE28D37A1400A69358 /* LogConsoleViewMode.swift */,
-				C2FC38DA28D3119C00A69358 /* LogConsoleManager.swift */,
 				C7161AF828E62FB400A941D1 /* LogConsoleMessage.swift */,
 				C7161B0928E6E84D00A941D1 /* LumberJackManager.swift */,
 			);
@@ -381,7 +381,7 @@
 				C2FC38A928D2F9E300A69358 /* MainViewController.swift in Sources */,
 				C7161B0628E6C23F00A941D1 /* Loggable+Extension.swift in Sources */,
 				C2FC38E228D399D300A69358 /* LinkedFramesList.swift in Sources */,
-				C2FC38DB28D3119C00A69358 /* LogConsoleManager.swift in Sources */,
+				C2FC38DB28D3119C00A69358 /* LogConsole.swift in Sources */,
 				C7161AFE28E6BA9B00A941D1 /* Loggable.swift in Sources */,
 				C7161AF728E625DB00A941D1 /* LogConsoleTableViewCell.swift in Sources */,
 				C2FC38D528D2FC1900A69358 /* LogConsoleViewController.swift in Sources */,

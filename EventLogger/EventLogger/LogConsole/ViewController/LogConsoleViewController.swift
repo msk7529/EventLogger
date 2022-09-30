@@ -65,6 +65,30 @@ final class LogConsoleViewController: UIViewController {
         }
     }
     
+    private var miniModePosition: CGPoint {
+        get {
+            guard let pos = UserDefaults.standard.value(forKey: "miniModePosition") as? String else {
+                return CGPoint(x: 20, y: 200)
+            }
+            return NSCoder.cgPoint(for: pos)
+        }
+        set {
+            UserDefaults.standard.setValue(NSCoder.string(for: newValue), forKey: "miniModePosition")
+        }
+    }
+    
+    private var expandModePosition: CGPoint {
+        get {
+            guard let pos = UserDefaults.standard.value(forKey: "expandModePosition") as? String else {
+                return CGPoint(x: 20, y: 200)
+            }
+            return NSCoder.cgPoint(for: pos)
+        }
+        set {
+            UserDefaults.standard.setValue(NSCoder.string(for: newValue), forKey: "expandModePosition")
+        }
+    }
+    
     private var currentFrame: CGRect?
     private var topConstraint: NSLayoutConstraint?
     private var leadingConstraint: NSLayoutConstraint?
@@ -146,8 +170,8 @@ final class LogConsoleViewController: UIViewController {
         logConsoleVC.view.addConstraint(heightConstarint)
          */
         
-        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: LogConsoleManager.miniModePosition.y)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
-        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: LogConsoleManager.miniModePosition.x)
+        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: miniModePosition.y)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
+        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: miniModePosition.x)
         heightConstraint = view.heightAnchor.constraint(equalToConstant: viewSize.height)
         widthConstraint = view.widthAnchor.constraint(equalToConstant: viewSize.width)
         
@@ -174,7 +198,7 @@ final class LogConsoleViewController: UIViewController {
         UIView.animate(withDuration: 0.2) {
             guard let superView = self.view.superview else { return }
             
-            let pos = LogConsoleManager.miniModePosition
+            let pos = self.miniModePosition
 
             self.leadingConstraint?.constant = pos.x
             self.topConstraint?.constant = pos.y
@@ -190,7 +214,7 @@ final class LogConsoleViewController: UIViewController {
         UIView.animate(withDuration: 0.2) {
             guard let superView = self.view.superview else { return }
             
-            let pos = LogConsoleManager.expandModePosition
+            let pos = self.expandModePosition
             
             self.leadingConstraint?.constant = pos.x
             self.topConstraint?.constant = pos.y
@@ -227,9 +251,9 @@ final class LogConsoleViewController: UIViewController {
             view.frame = destFrame
         case .ended:
             if viewMode == .mini {
-                LogConsoleManager.miniModePosition = view.frame.origin
+                miniModePosition = view.frame.origin
             } else if viewMode == .expanded {
-                LogConsoleManager.expandModePosition = view.frame.origin
+                expandModePosition = view.frame.origin
             }
         default:
             return

@@ -19,7 +19,7 @@ extension Loggable {
 
         if output.contains(.xcode) {
             // CustomDDOSLogger.log 호출
-            // level이 flag 높으면 xcode 콘솔에 노출되지 않음.
+            // flag가 level 로깅 수준보다 높아야 콘솔에 노출된다.
             _DDLogMessage(messageString,
                           level: .verbose,
                           flag: type.lumberjackFlag,

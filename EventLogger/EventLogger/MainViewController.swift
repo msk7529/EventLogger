@@ -51,6 +51,12 @@ final class MainViewController: UIViewController {
         Logger.test.infoLog("test category infoLog test")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        Logger.verboseLog("[CUSTOM] custom category verboseLog test")
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
