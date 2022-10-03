@@ -132,6 +132,7 @@ final class LogConsoleViewController: UIViewController {
         initView()
         initTableView()
         addGestureRecognizer()
+        addObservers()
     }
     
     override func viewDidLayoutSubviews() {
@@ -259,6 +260,13 @@ final class LogConsoleViewController: UIViewController {
     private func addGestureRecognizer() {
         view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didReceivePanAction(_:))))
         topContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didReceiveTapAction(_:))))
+    }
+    
+    private func addObservers() {
+        NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            guard let self = self, self.viewMode == .expanded else { return }
+            self.viewMode = .mini
+        }
     }
     
     func addLogs(logs: [LogConsoleMessage]) {
