@@ -7,7 +7,7 @@
 import CocoaLumberjackSwift
 import Foundation
 
-struct LogConsoleMessage: Hashable {
+final class LogConsoleMessage: Hashable {
     
     let uuid: UUID
     let message: String
@@ -18,9 +18,27 @@ struct LogConsoleMessage: Hashable {
     let timeStamp: Date
     let threadID: String
     let threadName: String
+    var isExpanded: Bool = false
     private(set) var queueLabel: String = ""
     private(set) var fullMsg: String = ""
     
+    private let longDateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.formatterBehavior = .behavior10_4
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
+        dateFormatter.calendar = Calendar(identifier: .gregorian)
+        return dateFormatter
+    }()
+    
+    var expandedMessage: String {
+        return """
+        #Loc    = \(fileName):\(UInt(fileLine))
+        #Thread = \(queueLabel)
+        #Date   = \(longDateFormatter.string(from: timeStamp))
+        ―――――――――――――――――――――――――――――――――――――
+        \(message)
+        """
+    }
     
     init(message: String, logType: LogType, fileName: String, fileLine: UInt, functionName: String) {
         self.uuid = UUID()

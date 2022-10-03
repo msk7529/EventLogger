@@ -44,6 +44,17 @@ final class LogConsoleViewController: UIViewController {
         return view
     }()
     
+    private let tempLabel: UILabel = {
+        // detailMsgLabel height를 계산하기 위함
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont(name: "Courier", size: 7)
+        label.isHidden = true
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     private var windowSize: CGSize {
         if let window = view.window {
             return window.bounds.size
@@ -338,6 +349,28 @@ final class LogConsoleViewController: UIViewController {
 
 extension LogConsoleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return LogConsoleTableViewCell.height
+        guard let item = dataSource.itemIdentifier(for: indexPath) else {
+            return LogConsoleTableViewCell.height
+        }
+        
+        if item.isExpanded {
+            tempLabel.text = item.expandedMessage
+            tempLabel.sizeToFit()
+            return LogConsoleTableViewCell.height + tempLabel.frame.size.height
+        } else {
+            return LogConsoleTableViewCell.height
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let item = dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        item.isExpanded.toggle()
+                
+        var snapShot = dataSource.snapshot()
+        snapShot.reloadItems([item])
+        dataSource.apply(snapShot)
     }
 }

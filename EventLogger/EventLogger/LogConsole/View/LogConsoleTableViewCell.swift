@@ -26,25 +26,37 @@ final class LogConsoleTableViewCell: UITableViewCell {
         return label
     }()
     
-    var message: LogConsoleMessage? {
-        didSet {
-            guard let message = message else {
-                return
-            }
-            timeLabel.text = dateFormatter.string(from: message.timeStamp)
-            msgLabel.text = message.message
-            setTextColor(with: message)
-            setBackgroundColor(with: message)
-        }
-    }
+    private let detailMsgLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = UIFont(name: "Courier", size: 7)
+        label.isHidden = true
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    private let dateFormatter: DateFormatter = {
+    private let shortDateFormatter: DateFormatter = {
         var dateFormatter = DateFormatter()
         dateFormatter.formatterBehavior = .behavior10_4
         dateFormatter.dateFormat = "HH:mm:ss.SS"
         dateFormatter.calendar = Calendar(identifier: .gregorian)
         return dateFormatter
     }()
+    
+    var message: LogConsoleMessage? {
+        didSet {
+            guard let message = message else {
+                return
+            }
+            timeLabel.text = shortDateFormatter.string(from: message.timeStamp)
+            msgLabel.text = message.message
+            detailMsgLabel.text = message.expandedMessage
+            detailMsgLabel.isHidden = !message.isExpanded
+            setTextColor(with: message)
+            setBackgroundColor(with: message)
+        }
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -62,12 +74,16 @@ final class LogConsoleTableViewCell: UITableViewCell {
     private func initView() {
         contentView.addSubview(timeLabel)
         contentView.addSubview(msgLabel)
+        contentView.addSubview(detailMsgLabel)
         
-        timeLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        timeLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2).isActive = true
         timeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5).isActive = true
         
-        msgLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        msgLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 2).isActive = true
         msgLabel.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 5).isActive = true
+        
+        detailMsgLabel.topAnchor.constraint(equalTo: msgLabel.bottomAnchor, constant: 5).isActive = true
+        detailMsgLabel.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor).isActive = true
     }
     
     private func setTextColor(with message: LogConsoleMessage) {
