@@ -10,7 +10,8 @@ import Foundation
 final class LogConsoleMessage: Hashable {
     
     let uuid: UUID
-    let message: String
+    private(set) var message: String
+    let fullMessage: String
     let logType: LogType
     let fileName: String
     let fileLine: UInt
@@ -18,31 +19,14 @@ final class LogConsoleMessage: Hashable {
     let timeStamp: Date
     let threadID: String
     let threadName: String
-    var isExpanded: Bool = false
     private(set) var queueLabel: String = ""
-    private(set) var fullMsg: String = ""
     
-    private let longDateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.formatterBehavior = .behavior10_4
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
-        dateFormatter.calendar = Calendar(identifier: .gregorian)
-        return dateFormatter
-    }()
-    
-    var expandedMessage: String {
-        return """
-        #Loc    = \(fileName):\(UInt(fileLine))
-        #Thread = \(queueLabel)
-        #Date   = \(longDateFormatter.string(from: timeStamp))
-        ―――――――――――――――――――――――――――――――――――――
-        \(message)
-        """
-    }
+    var isExpanded: Bool = false
     
     init(message: String, logType: LogType, fileName: String, fileLine: UInt, functionName: String) {
         self.uuid = UUID()
         self.message = message
+        self.fullMessage = message
         self.logType = logType
         self.fileName = URL(fileURLWithPath: fileName).deletingPathExtension().lastPathComponent
         self.fileLine = fileLine
@@ -51,22 +35,40 @@ final class LogConsoleMessage: Hashable {
         var tid = UInt64(0)
         pthread_threadid_np(nil, &tid)
         self.threadID = "\(tid)"
-        
         self.threadName = Thread.current.name ?? "unknown"
-        self.queueLabel = self.currentQueueName() ?? "unknown"
-    }
-    
-    private func currentQueueName() -> String? {
-        let name = __dispatch_queue_get_label(nil)
-        return String(cString: name, encoding: .utf8)
+        self.queueLabel = currentQueueName ?? "unknown"
+        
+        if message.count > 20 * 1024 {
+            self.message = String(message[..<message.index(message.startIndex, offsetBy: 20 * 1024)])
+        }
     }
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(uuid)
-        hasher.combine(message)
     }
     
     static func == (lhs: LogConsoleMessage, rhs: LogConsoleMessage) -> Bool {
-        return lhs.hashValue == rhs.hashValue
+        lhs.hashValue == rhs.hashValue
+    }
+}
+
+extension LogConsoleMessage {
+    
+    var currentQueueName: String? {
+        let name = __dispatch_queue_get_label(nil)
+        return String(cString: name, encoding: .utf8)
+    }
+    
+    var expandedMessage: String {
+        var formattedMessage = """
+        #Loc    = \(fileName):\(UInt(fileLine))
+        #Thread = \(queueLabel)
+        #Date   = \(LogConsoleDateFormatterGenerator.dateFormatter(type: .long).string(from: timeStamp))
+        ―――――――――――――――――――――――――――――――――――――
+        """
+        if !message.isEmpty {
+            formattedMessage += "\n\(message)"
+        }
+        return formattedMessage
     }
 }
