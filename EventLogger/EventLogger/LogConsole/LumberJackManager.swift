@@ -16,9 +16,11 @@ final class LumberJackManager {
         osLogger.logFormatter = osLogFormatter
         DDLog.add(osLogger, with: .debug)
         
+        /*
         let fileLogger: DDFileLogger = DDFileLogger() // File Logger
         fileLogger.rollingFrequency = 60 * 60 * 24 // 24 hours
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7
         DDLog.add(fileLogger)
+        */
     }
 }

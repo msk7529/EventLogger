@@ -12,7 +12,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow? {
         didSet {
             guard let window = window else { return }
+            #if DEBUG
+            let lumberJackManager = LumberJackManager()
+            lumberJackManager.setUpCocoaLumberJackLogger()
             LogConsole.start(with: window)
+            #endif
         }
     }
 
@@ -20,10 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        
-        let lumberJackManager = LumberJackManager()
-        lumberJackManager.setUpCocoaLumberJackLogger()
-        
+
         if let windowScene = scene as? UIWindowScene {
             let window = MainWindow(windowScene: windowScene)
             window.rootViewController = MainViewController()
