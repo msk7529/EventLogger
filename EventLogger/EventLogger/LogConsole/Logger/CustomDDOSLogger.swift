@@ -76,15 +76,20 @@ final class CustomDDOSLogger: DDAbstractLogger {
     }
 
     private func extractCategory(_ string: String) -> (String, String) {
-        guard string.first == "[", let categoryEndIndex = string.firstIndex(of: "]") else {
+        let categoryLength = 15
+        guard string.first == "[" else {
             return ("", string)
         }
-        
-        let categoryRange = string.index(string.startIndex, offsetBy: 1)..<categoryEndIndex
-        let bodyRange = string.index(categoryEndIndex, offsetBy: 2)..<string.endIndex
-        let category = String(string[categoryRange])
-        let body = String(string[bodyRange])
-        
+
+        let categoryCandidate = string.to(offset: categoryLength + 2)
+
+        guard let index = categoryCandidate.firstIndex(of: "]") else {
+            return ("", string)
+        }
+        let distance = categoryCandidate.distance(from: categoryCandidate.startIndex, to: index)
+        let category = categoryCandidate[1..<distance]
+        let body = string.from(offset: distance + 1).leadingTrimmed
+
         return (category, body)
     }
     

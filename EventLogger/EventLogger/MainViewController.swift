@@ -48,7 +48,7 @@ final class MainViewController: UIViewController {
         initView()
         setNavigationBar()
         
-        Logger.test.infoLog("test category infoLog test")
+        Logger.infoLog(category: .test, "test category infoLog test")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,8 +60,8 @@ final class MainViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        Logger.xcode.debugLog("xcode only debugLog test")
-        Logger.logconsole.errorLog("logconsole only errorLog test")
+        Logger.debugLog(output: .xcode, "xcode only debugLog test")
+        Logger.errorLog(output: .logconsole, "logconsole only errorLog test")
     }
     
     private func initView() {

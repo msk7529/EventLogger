@@ -30,7 +30,6 @@
 		C7161AF928E62FB400A941D1 /* LogConsoleMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AF828E62FB400A941D1 /* LogConsoleMessage.swift */; };
 		C7161AFC28E6BA7500A941D1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AFB28E6BA7500A941D1 /* Logger.swift */; };
 		C7161AFE28E6BA9B00A941D1 /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AFD28E6BA9B00A941D1 /* Loggable.swift */; };
-		C7161B0028E6BAC200A941D1 /* Logger+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AFF28E6BAC200A941D1 /* Logger+Helper.swift */; };
 		C7161B0428E6BAED00A941D1 /* LogCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0328E6BAED00A941D1 /* LogCategory.swift */; };
 		C7161B0628E6C23F00A941D1 /* Loggable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0528E6C23F00A941D1 /* Loggable+Extension.swift */; };
 		C7161B0828E6C72B00A941D1 /* CustomDDOSLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0728E6C72B00A941D1 /* CustomDDOSLogger.swift */; };
@@ -39,6 +38,8 @@
 		C7161B0F28E6EC1300A941D1 /* DefaultLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */; };
 		C7161B1128E7576C00A941D1 /* LogConsoleTopContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */; };
 		C7161B1328E773CE00A941D1 /* LogConsoleBottomContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B1228E773CE00A941D1 /* LogConsoleBottomContainerView.swift */; };
+		C7AA959428F5CAE900F99B3F /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959328F5CAE900F99B3F /* String+Subscript.swift */; };
+		C7AA959628F5CB4B00F99B3F /* String+Trimmed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,7 +85,6 @@
 		C7161AF828E62FB400A941D1 /* LogConsoleMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleMessage.swift; sourceTree = "<group>"; };
 		C7161AFB28E6BA7500A941D1 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		C7161AFD28E6BA9B00A941D1 /* Loggable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
-		C7161AFF28E6BAC200A941D1 /* Logger+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Logger+Helper.swift"; sourceTree = "<group>"; };
 		C7161B0328E6BAED00A941D1 /* LogCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCategory.swift; sourceTree = "<group>"; };
 		C7161B0528E6C23F00A941D1 /* Loggable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Loggable+Extension.swift"; sourceTree = "<group>"; };
 		C7161B0728E6C72B00A941D1 /* CustomDDOSLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDDOSLogger.swift; sourceTree = "<group>"; };
@@ -93,6 +93,8 @@
 		C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLogFormatter.swift; sourceTree = "<group>"; };
 		C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleTopContainerView.swift; sourceTree = "<group>"; };
 		C7161B1228E773CE00A941D1 /* LogConsoleBottomContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleBottomContainerView.swift; sourceTree = "<group>"; };
+		C7AA959328F5CAE900F99B3F /* String+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Subscript.swift"; sourceTree = "<group>"; };
+		C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Trimmed.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +147,7 @@
 		C2FC38A328D2F9E300A69358 /* EventLogger */ = {
 			isa = PBXGroup;
 			children = (
+				C7AA959228F5CADC00F99B3F /* Utility */,
 				C2FC38A428D2F9E300A69358 /* AppDelegate.swift */,
 				C2FC38A628D2F9E300A69358 /* SceneDelegate.swift */,
 				C2FC38D828D3094100A69358 /* MainWindow.swift */,
@@ -224,7 +227,6 @@
 			isa = PBXGroup;
 			children = (
 				C7161AFB28E6BA7500A941D1 /* Logger.swift */,
-				C7161AFF28E6BAC200A941D1 /* Logger+Helper.swift */,
 				C7161B0328E6BAED00A941D1 /* LogCategory.swift */,
 				C7161AFD28E6BA9B00A941D1 /* Loggable.swift */,
 				C7161B0528E6C23F00A941D1 /* Loggable+Extension.swift */,
@@ -240,6 +242,15 @@
 				C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */,
 			);
 			path = LogFormatter;
+			sourceTree = "<group>";
+		};
+		C7AA959228F5CADC00F99B3F /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				C7AA959328F5CAE900F99B3F /* String+Subscript.swift */,
+				C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -380,6 +391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2FC38DF28D37A1400A69358 /* LogConsoleViewMode.swift in Sources */,
+				C7AA959628F5CB4B00F99B3F /* String+Trimmed.swift in Sources */,
 				C7161B0D28E6EB1A00A941D1 /* BaseLogFormatter.swift in Sources */,
 				C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */,
 				C7161B0F28E6EC1300A941D1 /* DefaultLogFormatter.swift in Sources */,
@@ -400,9 +412,9 @@
 				C7161B0A28E6E84D00A941D1 /* LumberJackManager.swift in Sources */,
 				C7161B1328E773CE00A941D1 /* LogConsoleBottomContainerView.swift in Sources */,
 				C2FC38E828D39A9E00A69358 /* PerformanceView.swift in Sources */,
-				C7161B0028E6BAC200A941D1 /* Logger+Helper.swift in Sources */,
 				C7161B0428E6BAED00A941D1 /* LogCategory.swift in Sources */,
 				C2FC38A528D2F9E300A69358 /* AppDelegate.swift in Sources */,
+				C7AA959428F5CAE900F99B3F /* String+Subscript.swift in Sources */,
 				C2FC38A728D2F9E300A69358 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

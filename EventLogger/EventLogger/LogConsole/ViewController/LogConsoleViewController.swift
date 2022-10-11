@@ -282,7 +282,7 @@ final class LogConsoleViewController: UIViewController {
     
     func addLogs(logs: [LogConsoleMessage]) {
         guard LogConsole.isRunning else {
-            Logger.xcode.errorLog("LogConsole is not running!!")
+            Logger.errorLog(output: .xcode, "LogConsole is not running!!")
             return
         }
         

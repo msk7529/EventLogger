@@ -52,4 +52,3 @@ final class DefaultLogFormatter: BaseLogFormatter {
         return headerString + " " + bodyString
     }
 }
-

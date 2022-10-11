@@ -83,51 +83,6 @@ extension Loggable {
         log(type: .error, output: output, category: category, message(), file: file, function: function, line: line)
     }
     
-    func verboseLog(output: LogOutputMask? = nil,
-                 category: LogCategory? = nil,
-                 _ message: @autoclosure () -> Any,
-                 file: StaticString = #file,
-                 function: StaticString = #function,
-                 line: UInt = #line) {
-        Self.log(type: .verbose, output: output ?? self.output, category: category ?? self.category, message(), file: file, function: function, line: line)
-    }
-    
-    func debugLog(output: LogOutputMask? = nil,
-               category: LogCategory? = nil,
-               _ message: @autoclosure () -> Any,
-               file: StaticString = #file,
-               function: StaticString = #function,
-               line: UInt = #line) {
-        Self.log(type: .debug, output: output ?? self.output, category: category ?? self.category, message(), file: file, function: function, line: line)
-    }
-    
-    func infoLog(output: LogOutputMask? = nil,
-               category: LogCategory? = nil,
-               _ message: @autoclosure () -> Any,
-               file: StaticString = #file,
-               function: StaticString = #function,
-               line: UInt = #line) {
-        Self.log(type: .info, output: output ?? self.output, category: category ?? self.category, message(), file: file, function: function, line: line)
-    }
-    
-    func warningLog(output: LogOutputMask? = nil,
-               category: LogCategory? = nil,
-               _ message: @autoclosure () -> Any,
-               file: StaticString = #file,
-               function: StaticString = #function,
-               line: UInt = #line) {
-        Self.log(type: .warning, output: output ?? self.output, category: category ?? self.category, message(), file: file, function: function, line: line)
-    }
-    
-    func errorLog(output: LogOutputMask? = nil,
-               category: LogCategory? = nil,
-               _ message: @autoclosure () -> Any,
-               file: StaticString = #file,
-               function: StaticString = #function,
-               line: UInt = #line) {
-        Self.log(type: .error, output: output ?? self.output, category: category ?? self.category, message(), file: file, function: function, line: line)
-    }
-    
     private static func preprocessMessage(category: LogCategory?, message: Any) -> String {
         let messageString = String(describing: message)
         if let category = category {
