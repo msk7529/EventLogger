@@ -14,7 +14,7 @@ final class LogConsole {
     
     static func start(with window: UIWindow) {
         guard !isRunning else {
-            Log.errorLog("LogConsole is already running!!")
+            Log.error("LogConsole is already running!!")
             return
         }
         

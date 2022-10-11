@@ -41,7 +41,7 @@ extension Loggable {
         }
     }
     
-    static func verboseLog(output: LogOutputMask = .all,
+    static func verbose(output: LogOutputMask = .all,
                         category: LogCategory? = nil,
                         _ message: @autoclosure () -> Any,
                         file: StaticString = #file,
@@ -50,7 +50,7 @@ extension Loggable {
         log(type: .verbose, output: output, category: category, message(), file: file, function: function, line: line)
     }
     
-    static func debugLog(output: LogOutputMask = .all,
+    static func debug(output: LogOutputMask = .all,
                       category: LogCategory? = nil,
                       _ message: @autoclosure () -> Any,
                       file: StaticString = #file,
@@ -59,7 +59,7 @@ extension Loggable {
         log(type: .debug, output: output, category: category, message(), file: file, function: function, line: line)
     }
     
-    static func infoLog(output: LogOutputMask = .all,
+    static func info(output: LogOutputMask = .all,
                      category: LogCategory? = nil,
                      _ message: @autoclosure () -> Any,
                      file: StaticString = #file,
@@ -68,7 +68,7 @@ extension Loggable {
         log(type: .info, output: output, category: category, message(), file: file, function: function, line: line)
     }
     
-    static func warningLog(output: LogOutputMask = .all,
+    static func warning(output: LogOutputMask = .all,
                         category: LogCategory? = nil,
                         _ message: @autoclosure () -> Any,
                         file: StaticString = #file,
@@ -77,7 +77,7 @@ extension Loggable {
         log(type: .warning, output: output, category: category, message(), file: file, function: function, line: line)
     }
 
-    static func errorLog(output: LogOutputMask = .all,
+    static func error(output: LogOutputMask = .all,
                       category: LogCategory? = nil,
                       _ message: @autoclosure () -> Any,
                       file: StaticString = #file,

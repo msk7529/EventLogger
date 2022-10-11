@@ -48,20 +48,20 @@ final class MainViewController: UIViewController {
         initView()
         setNavigationBar()
         
-        Log.infoLog(category: .test, "test category infoLog test")
+        Log.info(category: .test, "test category infoLog test")
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        Log.verboseLog("[CUSTOM] custom category verboseLog test\n\nTest")
+        Log.verbose("[CUSTOM] custom category verboseLog test\n\nTest")
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        Log.debugLog(output: .xcode, "xcode only debugLog test")
-        Log.errorLog(output: .logconsole, "logconsole only errorLog test")
+        Log.debug(output: .xcode, "xcode only debugLog test")
+        Log.error(output: .logconsole, "logconsole only errorLog test")
     }
     
     private func initView() {
