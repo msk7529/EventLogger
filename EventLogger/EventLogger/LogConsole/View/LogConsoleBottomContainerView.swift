@@ -7,6 +7,8 @@ import UIKit
 
 final class LogConsoleBottomContainerView: UIView {
     
+    static let height: CGFloat = 30
+    
     enum ButtonType {
         case clear
     }
@@ -15,11 +17,14 @@ final class LogConsoleBottomContainerView: UIView {
         let button = UIButton()
         button.setTitle("CLEAR", for: .normal)
         button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(didTapClearButton), for: .touchUpInside)
+        button.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapButton?(.clear)
+        }), for: .touchUpInside)
         return button
     }()
-    
+
     var didTapButton: ((ButtonType) -> Void)?
     
     override init(frame: CGRect) {
@@ -47,9 +52,5 @@ final class LogConsoleBottomContainerView: UIView {
         clearButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
         clearButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
     }
-    
-    @objc
-    private func didTapClearButton() {
-        didTapButton?(.clear)
-    }
 }
+

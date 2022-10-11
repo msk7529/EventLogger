@@ -5,22 +5,19 @@
 //  Created by on 2022/09/15.
 //
 
+import Combine
 import UIKit
 
-final class LogConsoleViewController: UIViewController {
-
+final public class LogConsoleViewController: UIViewController {
+    
     // MARK: - Properties
     
-    static let shared = LogConsoleViewController()
-    
-    private enum Section {
-        case main
-    }
-    
-    private let topContainerView: LogConsoleTopContainerView = {
+    private lazy var topContainerView: LogConsoleTopContainerView = {
         let view = LogConsoleTopContainerView()
+        view.addTapHandler { [weak self] in
+            self?.viewModel.viewMode.toggle()
+        }
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.isUserInteractionEnabled = true
         return view
     }()
     
@@ -36,273 +33,208 @@ final class LogConsoleViewController: UIViewController {
     
     private lazy var bottomContainerView: LogConsoleBottomContainerView = {
         let view = LogConsoleBottomContainerView()
-        view.isHidden = true
         view.didTapButton = { [weak self] buttonType in
             self?.didTapBottomContainerButton(buttonType: buttonType)
         }
+        view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    private let tempLabel: UILabel = {
-        // detailMsgLabel height를 계산하기 위함
-        let label = UILabel()
-        label.textColor = .black
-        label.font = UIFont(name: "Courier", size: 7)
-        label.isHidden = true
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
+
     private var windowSize: CGSize {
-        if let window = view.window {
-            return window.bounds.size
+        guard let window = view.window else {
+            return UIScreen.main.bounds.size
         }
-        return UIScreen.main.bounds.size
+        return window.bounds.size
     }
     
     private var safeAreaInsets: UIEdgeInsets {
         var safeAreaInsets: UIEdgeInsets = .zero
-        safeAreaInsets.top = max(20, self.view.superview?.safeAreaInsets.top ?? 0)
-        safeAreaInsets.bottom = self.view.superview?.safeAreaInsets.bottom ?? 0
-        safeAreaInsets.left = self.view.superview?.safeAreaInsets.left ?? 0
-        safeAreaInsets.right = self.view.superview?.safeAreaInsets.right ?? 0
+        safeAreaInsets.top = max(20, view.superview?.safeAreaInsets.top ?? 0)
+        safeAreaInsets.bottom = view.superview?.safeAreaInsets.bottom ?? 0
+        safeAreaInsets.left = view.superview?.safeAreaInsets.left ?? 0
+        safeAreaInsets.right = view.superview?.safeAreaInsets.right ?? 0
         return safeAreaInsets
     }
     
-    private var viewSize: CGSize {
-        if viewMode == .mini {
-            return CGSize(width: miniViewWidth, height: miniViewHeight)
-        } else {
-            return CGSize(width: windowSize.width * CGFloat(0.7), height: windowSize.height * CGFloat(0.6))
-        }
-    }
+    public static let shared = LogConsoleViewController()
     
-    private var viewMode: LogConsoleViewMode = .mini {
-        didSet {
-            if viewMode == .mini {
-                minimize()
-            } else if viewMode == .expanded {
-                expand()
-            }
-        }
-    }
-    
-    private var miniModePosition: CGPoint {
-        get {
-            guard let pos = UserDefaults.standard.value(forKey: "miniModePosition") as? String else {
-                return CGPoint(x: 20, y: 200)
-            }
-            return NSCoder.cgPoint(for: pos)
-        }
-        set {
-            UserDefaults.standard.setValue(NSCoder.string(for: newValue), forKey: "miniModePosition")
-        }
-    }
-    
-    private var expandModePosition: CGPoint {
-        get {
-            guard let pos = UserDefaults.standard.value(forKey: "expandModePosition") as? String else {
-                return CGPoint(x: 20, y: 200)
-            }
-            return NSCoder.cgPoint(for: pos)
-        }
-        set {
-            UserDefaults.standard.setValue(NSCoder.string(for: newValue), forKey: "expandModePosition")
-        }
-    }
+    @LateInit
+    private(set) var viewModel: LogConsoleViewModel
     
     private var currentFrame: CGRect?
     private var topConstraint: NSLayoutConstraint?
     private var leadingConstraint: NSLayoutConstraint?
     private var heightConstraint: NSLayoutConstraint?
     private var widthConstraint: NSLayoutConstraint?
-    
     private var tableViewBottomConstraint: NSLayoutConstraint?
+
+    private var subscriptions = Set<AnyCancellable>()
     
-    private let miniViewWidth: CGFloat = 100
-    private let miniViewHeight: CGFloat = 44
+    // MARK: - Life Cycles
     
-    private var dataSource: UITableViewDiffableDataSource<Section, LogConsoleMessage>!
-    
-    // MARK: - Life Cycle
-    
-    deinit {
-        print("deinit LogConsoleViewController")
+    private init() {
+        super.init(nibName: nil, bundle: nil)
+        
+        viewModel = LogConsoleViewModel(dataSource: LogConsoleTableViewDataSource(tableView: logTableView))
     }
     
-    override func viewDidLoad() {
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    public override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.layer.borderWidth = 2
-        view.layer.borderColor = UIColor.black.cgColor
-        view.backgroundColor = .white
-        view.translatesAutoresizingMaskIntoConstraints = false
         
         initView()
-        initTableView()
-        addGestureRecognizer()
         addObservers()
+        
+        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didReceivePanAction(_:))))
     }
     
-    override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        view.layer.borderWidth = 2
+        view.layer.borderColor = UIColor.black.cgColor
     }
     
     // MARK: - UI
     
     private func initView() {
+        view.backgroundColor = .white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
         view.addSubview(topContainerView)
         view.addSubview(logTableView)
         view.addSubview(bottomContainerView)
-        
+
         topContainerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         topContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         topContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        topContainerView.heightAnchor.constraint(equalToConstant: miniViewHeight).isActive = true
+        topContainerView.heightAnchor.constraint(equalToConstant: getViewSize(with: .mini).height).isActive = true
         
         logTableView.topAnchor.constraint(equalTo: topContainerView.bottomAnchor).isActive = true
         logTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         logTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         tableViewBottomConstraint = logTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         tableViewBottomConstraint?.isActive = true
-        
+
         bottomContainerView.topAnchor.constraint(equalTo: logTableView.bottomAnchor).isActive = true
         bottomContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         bottomContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         bottomContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
-    private func initTableView() {
-        dataSource = .init(tableView: logTableView, cellProvider: { tableView, indexPath, itemIdentifier in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: LogConsoleTableViewCell.identifier, for: indexPath) as? LogConsoleTableViewCell else {
-                return UITableViewCell()
-            }
-            
-            cell.message = itemIdentifier
-            return cell
-        })
+    private func bindViewModel() {
+        viewModel.$miniModePos
+            .dropFirst()
+            .sink { [weak self] pos in
+                self?.topConstraint?.constant = pos.y
+                self?.leadingConstraint?.constant = pos.x
+            }.store(in: &subscriptions)
         
-        logTableView.dataSource = dataSource
+        viewModel.$expandModePos
+            .dropFirst()
+            .sink { [weak self] pos in
+                self?.topConstraint?.constant = pos.y
+                self?.leadingConstraint?.constant = pos.x
+            }.store(in: &subscriptions)
         
-        var snapShot = NSDiffableDataSourceSnapshot<Section, LogConsoleMessage>()
-        snapShot.appendSections([.main])
-        dataSource.apply(snapShot)
+        viewModel.$viewMode
+            .dropFirst()
+            .sink { [weak self] viewMode in
+                self?.adjustViewMode(to: viewMode)
+            }.store(in: &subscriptions)
+        
+        viewModel.$logMessageUpdated
+            .sink { [weak self] in
+                // 메시지 업데이트시 최하단으로 강제 이동.... 개선필요 > TODO(lehends)
+                self?.scrollToBottom()
+            }.store(in: &subscriptions)
+        
+        viewModel.isBindCompleted = true
     }
-    
-    func setConstraints(with window: UIWindow) {
-        /*
-        let topConstraint = NSLayoutConstraint(item: logConsoleVC.view as Any, attribute: .top, relatedBy: .equal, toItem: logConsoleVC.view.superview, attribute: .top, multiplier: 1, constant: 30)
-        let leadingConstraint = NSLayoutConstraint(item: logConsoleVC.view as Any, attribute: .leading, relatedBy: .equal, toItem: logConsoleVC.view.superview, attribute: .leading, multiplier: 1, constant: 10)
-        let widthConstarint = NSLayoutConstraint(item: logConsoleVC.view as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 50)
-        let heightConstarint = NSLayoutConstraint(item: logConsoleVC.view as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 100)
-        window.addConstraint(leadingConstraint)
-        window.addConstraint(topConstraint)
 
-        logConsoleVC.view.addConstraint(widthConstarint)
-        logConsoleVC.view.addConstraint(heightConstarint)
-         */
+    public func setConstraints(with window: UIWindow) {
+        // 앱 윈도우의 rootVC가 변경될 때 마다 메서드를 수행하지 않으면 Constraints 틀어짐 발생
+        [topConstraint, leadingConstraint, heightConstraint, widthConstraint].compactMap { $0 }.forEach {
+            view.removeConstraint($0)
+        }
         
-        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: miniModePosition.y)     // 여기를 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
-        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: miniModePosition.x)
+        let viewSize = getViewSize(with: .mini)
+        topConstraint = view.topAnchor.constraint(equalTo: window.topAnchor, constant: viewModel.miniModePos.y)  // 제약을 window.safeAreaLayoutGuide.topAnchor로 주면 팬제스처 시에 버벅이게 된다.
+        leadingConstraint = view.leadingAnchor.constraint(equalTo: window.leadingAnchor, constant: viewModel.miniModePos.x)
         heightConstraint = view.heightAnchor.constraint(equalToConstant: viewSize.height)
         widthConstraint = view.widthAnchor.constraint(equalToConstant: viewSize.width)
         
-        [topConstraint, leadingConstraint, heightConstraint, widthConstraint].forEach {
-            $0?.isActive = true
+        [topConstraint, leadingConstraint, heightConstraint, widthConstraint].forEach { $0?.isActive = true }
+        
+        adjustViewMode(to: viewModel.viewMode)
+        
+        if !viewModel.isBindCompleted {
+            bindViewModel()
         }
-
-        // window.bringSubviewToFront(LogConsoleVC.view)
+    }
+    
+    private func getViewSize(with viewMode: LogConsoleViewMode) -> CGSize {
+        switch viewMode {
+        case .mini:
+            return CGSize(width: 100, height: 44)
+        case .expanded:
+            return CGSize(width: windowSize.width * CGFloat(0.7), height: windowSize.height * CGFloat(0.6))
+        }
     }
     
     private func calculateRightViewPosition(from pos: CGPoint) -> CGPoint {
-        // 로그콘솔이 화면 밖을 벗어나지 못하도록 위치를 재조정. expand 상태에서는 편의를 위해 화면을 벗어날 수 있도록 처리.
+        // 로그콘솔이 화면 밖을 벗어나지 못하도록 위치를 재조정. expand 상태에서는 편의를 위해 화면을 벗어날 수 있도록 처리
         var resultPos = pos
         let safeAreaInsets = safeAreaInsets
+        let miniViewSize = getViewSize(with: .mini)
 
         resultPos.x = max(pos.x, safeAreaInsets.left)
-        resultPos.x = min(resultPos.x, windowSize.width - miniViewWidth - safeAreaInsets.right)
+        resultPos.x = min(resultPos.x, windowSize.width - miniViewSize.width - safeAreaInsets.right)
         resultPos.y = max(pos.y, safeAreaInsets.top)
-        resultPos.y = min(resultPos.y, windowSize.height - safeAreaInsets.bottom - miniViewHeight)
+        resultPos.y = min(resultPos.y, windowSize.height - miniViewSize.height - safeAreaInsets.bottom)
         return resultPos
     }
     
-    private func minimize() {
+    private func adjustViewMode(to viewMode: LogConsoleViewMode) {
         UIView.animate(withDuration: 0.2) {
             guard let superView = self.view.superview else { return }
             
-            let pos = self.miniModePosition
-
+            let pos = viewMode == .mini ? self.viewModel.miniModePos : self.viewModel.expandModePos
+            let viewSize = self.getViewSize(with: viewMode)
             self.leadingConstraint?.constant = pos.x
             self.topConstraint?.constant = pos.y
-            self.heightConstraint?.constant = self.viewSize.height
-            self.widthConstraint?.constant = self.viewSize.width
-            self.tableViewBottomConstraint?.constant = 0
-            self.logTableView.isHidden = true
-            self.bottomContainerView.isHidden = true
+            self.heightConstraint?.constant = viewSize.height
+            self.widthConstraint?.constant = viewSize.width
+            self.tableViewBottomConstraint?.constant = viewMode == .mini ? 0 : -LogConsoleBottomContainerView.height
+            self.logTableView.isHidden = viewMode == .mini ? true : false
+            self.bottomContainerView.isHidden = viewMode == .mini ? true : false
             superView.layoutIfNeeded()  // 미호출시 애니메이션 적용 안 됨
         } completion: { _ in
-            
-        }
-    }
-    
-    private func expand() {
-        UIView.animate(withDuration: 0.2) {
-            guard let superView = self.view.superview else { return }
-            
-            let pos = self.expandModePosition
-            
-            self.leadingConstraint?.constant = pos.x
-            self.topConstraint?.constant = pos.y
-            self.heightConstraint?.constant = self.viewSize.height
-            self.widthConstraint?.constant = self.viewSize.width
-            self.tableViewBottomConstraint?.constant = -self.miniViewHeight
-            self.logTableView.isHidden = false
-            self.bottomContainerView.isHidden = false
-            superView.layoutIfNeeded()  // 미호출시 애니메이션 적용 안 됨
-        } completion: { _ in
-            
-        }
-    }
-    
-    // MARK: - Helper
-    
-    private func addGestureRecognizer() {
-        view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didReceivePanAction(_:))))
-        topContainerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didReceiveTapAction(_:))))
-    }
-    
-    private func addObservers() {
-        NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
-            guard let self = self, self.viewMode == .expanded else { return }
-            self.viewMode = .mini
-        }
-    }
-    
-    func addLogs(logs: [LogConsoleMessage]) {
-        guard LogConsole.isRunning else {
-            Log.error(output: .xcode, "LogConsole is not running!!")
-            return
-        }
-        
-        var snapshot = dataSource.snapshot()
-        snapshot.appendItems(logs)
-        dataSource.apply(snapshot, animatingDifferences: true)
-        
-        setContentOffsetProperty()
-    }
-    
-    private func setContentOffsetProperty() {
-        if logTableView.frame.size.height <= logTableView.contentSize.height {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                let currentOffset = self.logTableView.contentOffset
-                self.logTableView.setContentOffset(CGPoint(x: currentOffset.x, y: currentOffset.y + LogConsoleTableViewCell.height), animated: true)
+            if viewMode == .expanded {
+                self.scrollToBottom()
             }
         }
     }
-
-    // MARK: - Action
+    
+    private func scrollToBottom() {
+        guard let lastIndex = viewModel.lastLogMessageIndexPath else { return }
+        logTableView.scrollToRow(at: lastIndex, at: .bottom, animated: true)
+    }
+    
+    // MARK: - Observers
+    
+    private func addObservers() {
+        NotificationCenter.default.addObserver(forName: UIDevice.orientationDidChangeNotification, object: nil, queue: nil) { [weak self] _ in
+            guard let self = self, self.viewModel.viewMode == .expanded else { return }
+            self.viewModel.viewMode.toggle()
+        }
+    }
+    
+    // MARK: - Actions
     
     @objc
     private func didReceivePanAction(_ sender: UIPanGestureRecognizer) {
@@ -315,62 +247,46 @@ final class LogConsoleViewController: UIViewController {
             let offset = sender.translation(in: view.superview)
             var destFrame = currentFrame.offsetBy(dx: offset.x, dy: offset.y)
             destFrame.origin = calculateRightViewPosition(from: destFrame.origin)
-            topConstraint?.constant = destFrame.minY
-            leadingConstraint?.constant = destFrame.minX
             view.frame = destFrame
         case .ended:
-            if viewMode == .mini {
-                miniModePosition = view.frame.origin
-            } else if viewMode == .expanded {
-                expandModePosition = view.frame.origin
+            switch viewModel.viewMode {
+            case .mini:
+                viewModel.miniModePos = view.frame.origin
+            case .expanded:
+                viewModel.expandModePos = view.frame.origin
             }
         default:
             return
         }
     }
     
-    @objc
-    private func didReceiveTapAction(_ sender: UITapGestureRecognizer) {
-        if sender.view === topContainerView {
-            viewMode.toggle()
-        }
-    }
-    
     private func didTapBottomContainerButton(buttonType: LogConsoleBottomContainerView.ButtonType) {
         switch buttonType {
         case .clear:
-            var snapShot = dataSource.snapshot()
-            snapShot.deleteAllItems()
-            snapShot.appendSections([.main])
-            dataSource.apply(snapShot)
+            viewModel.removeAllMessages()
         }
     }
 }
 
 extension LogConsoleViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let item = dataSource.itemIdentifier(for: indexPath) else {
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let logMessage = viewModel.logMessage(at: indexPath) else {
             return LogConsoleTableViewCell.height
         }
         
-        if item.isExpanded {
-            tempLabel.text = item.expandedMessage
-            tempLabel.sizeToFit()
-            return LogConsoleTableViewCell.height + tempLabel.frame.size.height
+        if logMessage.isExpanded {
+            return viewModel.calcExpandedMessageHeight(logMessage, constrainedWidth: tableView.frame.width, constrainedHeight: tableView.frame.height)
         } else {
             return LogConsoleTableViewCell.height
         }
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let item = dataSource.itemIdentifier(for: indexPath) else {
-            return
-        }
-
-        item.isExpanded.toggle()
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let logMessage = viewModel.logMessage(at: indexPath) else { return }
+        
+        logMessage.isExpanded.toggle()
                 
-        var snapShot = dataSource.snapshot()
-        snapShot.reloadItems([item])
-        dataSource.apply(snapShot)
+        viewModel.refreshLogMessage(logMessage)
     }
 }

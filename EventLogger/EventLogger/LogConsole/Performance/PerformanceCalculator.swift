@@ -44,15 +44,15 @@ final class PerformanceCalculator {
     private struct Constants {
         static let accumulationTimeInSeconds = 1.0
     }
-        
+    
     var onReport: ((_ performanceReport: PerformanceReport) -> Void)?
-        
+    
     private var displayLink: CADisplayLink!
     private let linkedFramesList = LinkedFramesList()
     private var startTimestamp: TimeInterval?
     private var lastTimestamp: TimeInterval?
     private var accumulatedInformationIsEnough = false
-        
+    
     init() {
         self.displayLink = CADisplayLink(target: self, selector: #selector(PerformanceCalculator.displayLinkAction(displayLink:)))
         self.displayLink.isPaused = true
@@ -86,12 +86,12 @@ final class PerformanceCalculator {
         let threadsResult = task_threads(mach_task_self_, &threadsList, &threadsCount)
         
         var result = [(String, Double)]()
-
+        
         guard threadsResult == KERN_SUCCESS,
               let threadsList = threadsList else {
             return []
         }
-
+        
         for index in 0 ..< threadsCount {
             var threadInfo = thread_basic_info()
             var threadInfoCount = mach_msg_type_number_t(THREAD_INFO_MAX)
@@ -102,7 +102,7 @@ final class PerformanceCalculator {
                 }
             }
             guard infoResult == KERN_SUCCESS else { break }
-
+            
             var identifierInfo = thread_identifier_info()
             infoResult = withUnsafeMutablePointer(to: &identifierInfo) {
                 $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
@@ -110,22 +110,22 @@ final class PerformanceCalculator {
                 }
             }
             guard infoResult == KERN_SUCCESS else { break }
-
+            
             let threadBasicInfo = threadInfo as thread_basic_info
             if threadBasicInfo.flags & TH_FLAGS_IDLE == 0 {
                 let usage = (Double(threadBasicInfo.cpu_usage) / Double(TH_USAGE_SCALE) * 100.0)
                 totalUsageOfCPU = (totalUsageOfCPU + usage)
-
+                
                 var threadName: String = "Thread \(index + 1)"
-
-                if let name = getThreadName(thread), name.count > 0 {
+                
+                if let name = getThreadName(thread), !name.isEmpty {
                     threadName = "\(threadName) (\(name))"
                 }
-
+                
                 result.append((threadName, usage))
             }
         }
-
+        
         return result
     }
     
@@ -143,10 +143,10 @@ final class PerformanceCalculator {
     
     private func getThreadName(pthread: pthread_t) -> String {
         var chars: [Int8] = Array(repeating: 0, count: 128)
-
+        
         let error = pthread_getname_np(pthread, &chars, chars.count)
         assert(error == 0, "Could not retrieve thread name")
-
+        
         let characters = chars.filter { $0 != 0 }.map { UInt8($0) }.map(UnicodeScalar.init).map(Character.init)
         return String(characters)
     }
@@ -184,12 +184,12 @@ final class PerformanceCalculator {
             }
         }
         let threadsResult = task_threads(mach_task_self_, &threadsList, &threadsCount)
-
+        
         guard threadsResult == KERN_SUCCESS,
               let threadsList = threadsList else {
             return 0
         }
-
+        
         for index in 0..<threadsCount {
             var threadInfo = thread_basic_info()
             var threadInfoCount = mach_msg_type_number_t(THREAD_INFO_MAX)
@@ -198,20 +198,20 @@ final class PerformanceCalculator {
                     thread_info(threadsList[Int(index)], thread_flavor_t(THREAD_BASIC_INFO), $0, &threadInfoCount)
                 }
             }
-
+            
             guard infoResult == KERN_SUCCESS else {
                 break
             }
-
+            
             let threadBasicInfo = threadInfo as thread_basic_info
             if threadBasicInfo.flags & TH_FLAGS_IDLE == 0 {
                 totalUsageOfCPU = (totalUsageOfCPU + (Double(threadBasicInfo.cpu_usage) / Double(TH_USAGE_SCALE) * 100.0))
             }
         }
-
+        
         return totalUsageOfCPU
     }
-
+    
     func memoryUsage() -> MemoryUsage {
         var taskInfo = task_vm_info_data_t()
         var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4

@@ -41,6 +41,14 @@
 		C7AA959428F5CAE900F99B3F /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959328F5CAE900F99B3F /* String+Subscript.swift */; };
 		C7AA959628F5CB4B00F99B3F /* String+Trimmed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */; };
 		C7AA959828F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959728F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift */; };
+		C7AA959A28F5CD5300F99B3F /* UIView+Gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959928F5CD5300F99B3F /* UIView+Gesture.swift */; };
+		C7AA959C28F5CD7400F99B3F /* LateInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959B28F5CD7400F99B3F /* LateInit.swift */; };
+		C7AA959E28F5CD9F00F99B3F /* LogConsoleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959D28F5CD9F00F99B3F /* LogConsoleViewModel.swift */; };
+		C7AA95A028F5CDD600F99B3F /* LogConsoleTableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959F28F5CDD600F99B3F /* LogConsoleTableSection.swift */; };
+		C7AA95A228F5CDF600F99B3F /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA95A128F5CDF600F99B3F /* Cache.swift */; };
+		C7AA95A428F5CEDC00F99B3F /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA95A328F5CEDC00F99B3F /* PaddingLabel.swift */; };
+		C7AA95A628F5CF4400F99B3F /* UILabel+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA95A528F5CF4400F99B3F /* UILabel+Size.swift */; };
+		C7AA95A828F5CFB300F99B3F /* String+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA95A728F5CFB300F99B3F /* String+Size.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +105,14 @@
 		C7AA959328F5CAE900F99B3F /* String+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Subscript.swift"; sourceTree = "<group>"; };
 		C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Trimmed.swift"; sourceTree = "<group>"; };
 		C7AA959728F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleDateFormatterGenerator.swift; sourceTree = "<group>"; };
+		C7AA959928F5CD5300F99B3F /* UIView+Gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Gesture.swift"; sourceTree = "<group>"; };
+		C7AA959B28F5CD7400F99B3F /* LateInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LateInit.swift; sourceTree = "<group>"; };
+		C7AA959D28F5CD9F00F99B3F /* LogConsoleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleViewModel.swift; sourceTree = "<group>"; };
+		C7AA959F28F5CDD600F99B3F /* LogConsoleTableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleTableSection.swift; sourceTree = "<group>"; };
+		C7AA95A128F5CDF600F99B3F /* Cache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
+		C7AA95A328F5CEDC00F99B3F /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		C7AA95A528F5CF4400F99B3F /* UILabel+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Size.swift"; sourceTree = "<group>"; };
+		C7AA95A728F5CFB300F99B3F /* String+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Size.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +217,8 @@
 			isa = PBXGroup;
 			children = (
 				C2FC38D428D2FC1900A69358 /* LogConsoleViewController.swift */,
+				C7AA959D28F5CD9F00F99B3F /* LogConsoleViewModel.swift */,
+				C7AA959F28F5CDD600F99B3F /* LogConsoleTableSection.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -222,6 +240,7 @@
 				C7161AF628E625DB00A941D1 /* LogConsoleTableViewCell.swift */,
 				C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */,
 				C7161B1228E773CE00A941D1 /* LogConsoleBottomContainerView.swift */,
+				C7AA95A328F5CEDC00F99B3F /* PaddingLabel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -251,7 +270,12 @@
 			isa = PBXGroup;
 			children = (
 				C7AA959328F5CAE900F99B3F /* String+Subscript.swift */,
+				C7AA95A728F5CFB300F99B3F /* String+Size.swift */,
 				C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */,
+				C7AA959928F5CD5300F99B3F /* UIView+Gesture.swift */,
+				C7AA95A528F5CF4400F99B3F /* UILabel+Size.swift */,
+				C7AA959B28F5CD7400F99B3F /* LateInit.swift */,
+				C7AA95A128F5CDF600F99B3F /* Cache.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -394,11 +418,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2FC38DF28D37A1400A69358 /* LogConsoleViewMode.swift in Sources */,
+				C7AA959E28F5CD9F00F99B3F /* LogConsoleViewModel.swift in Sources */,
 				C7AA959628F5CB4B00F99B3F /* String+Trimmed.swift in Sources */,
 				C7161B0D28E6EB1A00A941D1 /* BaseLogFormatter.swift in Sources */,
 				C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */,
 				C7161B0F28E6EC1300A941D1 /* DefaultLogFormatter.swift in Sources */,
 				C7161AF928E62FB400A941D1 /* LogConsoleMessage.swift in Sources */,
+				C7AA95A828F5CFB300F99B3F /* String+Size.swift in Sources */,
 				C2FC38A928D2F9E300A69358 /* MainViewController.swift in Sources */,
 				C7161B0628E6C23F00A941D1 /* Loggable+Extension.swift in Sources */,
 				C2FC38E228D399D300A69358 /* LinkedFramesList.swift in Sources */,
@@ -407,19 +433,25 @@
 				C7161B1128E7576C00A941D1 /* LogConsoleTopContainerView.swift in Sources */,
 				C7161AF728E625DB00A941D1 /* LogConsoleTableViewCell.swift in Sources */,
 				C2FC38D528D2FC1900A69358 /* LogConsoleViewController.swift in Sources */,
+				C7AA95A628F5CF4400F99B3F /* UILabel+Size.swift in Sources */,
 				C7161B0828E6C72B00A941D1 /* CustomDDOSLogger.swift in Sources */,
 				C2FC38E628D39A0F00A69358 /* PerformanceCalculator.swift in Sources */,
 				C2FC38D928D3094100A69358 /* MainWindow.swift in Sources */,
 				C7161AFC28E6BA7500A941D1 /* Log.swift in Sources */,
 				C2FC38E428D399F400A69358 /* PerformanceMonitor.swift in Sources */,
 				C7161B0A28E6E84D00A941D1 /* LumberJackManager.swift in Sources */,
+				C7AA95A428F5CEDC00F99B3F /* PaddingLabel.swift in Sources */,
 				C7161B1328E773CE00A941D1 /* LogConsoleBottomContainerView.swift in Sources */,
 				C2FC38E828D39A9E00A69358 /* PerformanceView.swift in Sources */,
 				C7AA959828F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift in Sources */,
 				C7161B0428E6BAED00A941D1 /* LogCategory.swift in Sources */,
 				C2FC38A528D2F9E300A69358 /* AppDelegate.swift in Sources */,
+				C7AA95A228F5CDF600F99B3F /* Cache.swift in Sources */,
 				C7AA959428F5CAE900F99B3F /* String+Subscript.swift in Sources */,
+				C7AA959C28F5CD7400F99B3F /* LateInit.swift in Sources */,
+				C7AA959A28F5CD5300F99B3F /* UIView+Gesture.swift in Sources */,
 				C2FC38A728D2F9E300A69358 /* SceneDelegate.swift in Sources */,
+				C7AA95A028F5CDD600F99B3F /* LogConsoleTableSection.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

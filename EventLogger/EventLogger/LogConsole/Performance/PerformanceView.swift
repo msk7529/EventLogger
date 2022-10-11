@@ -191,8 +191,6 @@ final class PerformanceView: UIView, PerformanceMonitorDelegate {
         return stackView
     }
     
-    // MARK: - Helper
-    
     private func bind() {
         performanceReportSubject.sink { [weak self] report in
             guard let `self` = self else { return }
@@ -220,8 +218,7 @@ final class PerformanceView: UIView, PerformanceMonitorDelegate {
         let reports = PerformanceMonitor.shared.getLastReports(duration: 15)
         if reports.count == 15, let last = reports.last?.cpuUsage, last > 50.0 {
             
-            print(String(format: "[CPU] The average CPU usage is %.1f%%!!!", last))
-            // LogConsole.verbose(String(format: "[CPU] The average CPU usage is %.1f%%!!!", last))
+            Log.verbose("[CPU] \(String(format: "[CPU] The average CPU usage is %.1f%%!!!", last))")
 
             let average = Int(reports.map { min(100, $0.cpuUsage) }.reduce(0, +)) / 15
             
@@ -229,14 +226,12 @@ final class PerformanceView: UIView, PerformanceMonitorDelegate {
                 if average > 90 {
                     let logString = makeLogString(average, 15)
                     print(logString)
-                    // LogConsole.error(logString)
+                    Log.error(logString)
                 } else if average > 70 {
                     let logString = makeLogString(average, 15)
-                    print(logString)
-                    // LogConsole.warning(logString)
+                    Log.warning(logString)
                 }
             }
         }
     }
-
 }

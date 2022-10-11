@@ -33,7 +33,7 @@ fileprivate final class FrameNode {
     /// Initializes linked list node with parameters.
     ///
     /// - Parameter timeInterval: Frame timestamp.
-    public init(timestamp: TimeInterval) {
+    init(timestamp: TimeInterval) {
         self.timestamp = timestamp
     }
 }

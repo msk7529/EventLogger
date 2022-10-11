@@ -3,16 +3,16 @@
 //  EventLogger
 //
 
-import CocoaLumberjackSwift
-import Foundation
 import UIKit
 
-final class LogConsole {
-        
-    static var isRunning: Bool = false
-    static var logsBeforeStart: [LogConsoleMessage] = []
+final public class LogConsole {
     
-    static func start(with window: UIWindow) {
+    private static var isRunning: Bool = false
+    private static var logsBeforeStart: [LogConsoleMessage] = []
+    
+    private static let syncQueue = DispatchQueue(label: "com.openLink.logconsole")
+    
+    public static func start(with window: UIWindow) {
         guard !isRunning else {
             Log.error("LogConsole is already running!!")
             return
@@ -20,24 +20,27 @@ final class LogConsole {
         
         defer {
             isRunning = true
-            LogConsoleViewController.shared.addLogs(logs: logsBeforeStart)
+            LogConsoleViewController.shared.viewModel.addLogMessages(logsBeforeStart)
             logsBeforeStart.removeAll()
         }
         
-        let logConsoleVC = LogConsoleViewController.shared  // MainWindow에 addSubview후 deinit 되지 않도록 싱글턴으로 생성
+        let logConsoleVC = LogConsoleViewController.shared
         window.addSubview(logConsoleVC.view)
         logConsoleVC.setConstraints(with: window)
     }
     
-    static func bringToFront(window: UIWindow) {
+    public static func bringToFront(window: UIWindow) {
+        // guard !isRunning else { return }
         window.bringSubviewToFront(LogConsoleViewController.shared.view)
     }
     
-    static func addLog(log: LogConsoleMessage) {
-        if isRunning {
-            LogConsoleViewController.shared.addLogs(logs: [log])
-        } else {
-            logsBeforeStart.append(log)
+    static func addLogMessage(_ message: LogConsoleMessage) {
+        syncQueue.sync {
+            if isRunning {
+                LogConsoleViewController.shared.viewModel.addLogMessages([message])
+            } else {
+                logsBeforeStart.append(message)
+            }
         }
     }
 }

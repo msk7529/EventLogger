@@ -17,6 +17,7 @@ final class LogConsoleTopContainerView: UIView {
         super.init(frame: .zero)
         
         backgroundColor = .gray
+        
         initView()
     }
     

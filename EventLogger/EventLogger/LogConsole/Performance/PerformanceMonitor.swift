@@ -4,10 +4,9 @@
 //
 
 
-import Foundation
 import UIKit
 
-public class PerformanceMonitor {
+final class PerformanceMonitor {
     
     private enum States {
         case started
@@ -21,16 +20,15 @@ public class PerformanceMonitor {
     private var state = States.paused
     private var reports: [PerformanceReport] = []
     
-    public weak var delegate: PerformanceMonitorDelegate?
+    weak var delegate: PerformanceMonitorDelegate?
     
-    public init() {
+    private init() {
         performanceCalculator.onReport = { [weak self] performanceReport in
             DispatchQueue.main.async {
                 self?.apply(performanceReport: performanceReport)
             }
         }
-        
-        self.addObservers()
+        addObservers()
     }
 
     deinit {
@@ -40,22 +38,22 @@ public class PerformanceMonitor {
     // MARK: - Helper
     
     func start() {
-        switch self.state {
+        switch state {
         case .started:
             return
         case .paused, .pausedBySystem:
-            self.state = .started
-            self.performanceCalculator.start()
+            state = .started
+            performanceCalculator.start()
         }
     }
     
     func pause() {
-        switch self.state {
+        switch state {
         case .paused:
             return
         case .started, .pausedBySystem:
-            self.state = .paused
-            self.performanceCalculator.pause()
+            state = .paused
+            performanceCalculator.pause()
         }
     }
     
@@ -72,7 +70,7 @@ public class PerformanceMonitor {
         return performanceCalculator.cpuUsagePerThread()
     }
     
-    func apply(performanceReport: PerformanceReport) {
+    private func apply(performanceReport: PerformanceReport) {
         appendReport(performanceReport)
         delegate?.performanceMonitor(didReport: performanceReport)
     }
@@ -98,22 +96,22 @@ public class PerformanceMonitor {
     }
     
     private func applicationWillEnterForegroundNotification(notification: Notification) {
-        switch self.state {
+        switch state {
         case .started, .paused:
             return
         case .pausedBySystem:
-            self.state = .started
-            self.performanceCalculator.start()
+            state = .started
+            performanceCalculator.start()
         }
     }
     
     private func applicationDidEnterBackgroundNotification(notification: Notification) {
-        switch self.state {
+        switch state {
         case .paused, .pausedBySystem:
             return
         case .started:
-            self.state = .pausedBySystem
-            self.performanceCalculator.pause()
+            state = .pausedBySystem
+            performanceCalculator.pause()
         }
     }
 }
