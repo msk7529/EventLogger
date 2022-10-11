@@ -33,7 +33,7 @@ final class TestViewController: UIViewController {
         
         initView()
         
-        Logger.verboseLog("verboseLog test")
+        Log.verboseLog("verboseLog test")
     }
     
     private func initView() {

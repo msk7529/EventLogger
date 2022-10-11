@@ -15,6 +15,9 @@ extension Loggable {
                     file: StaticString = #file,
                     function: StaticString = #function,
                     line: UInt = #line) {
+        #if !DEBUG
+        return
+        #endif
         let messageString = preprocessMessage(category: category, message: message())
 
         if output.contains(.xcode) {

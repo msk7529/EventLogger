@@ -1,11 +1,11 @@
 //
-//  Logger.swift
+//  Log.swift
 //  EventLogger
 //
 
 import Foundation
 
-struct Logger: Loggable {
+struct Log: Loggable {
     var output: LogOutputMask
     var category: LogCategory?
 

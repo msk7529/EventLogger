@@ -28,7 +28,7 @@
 		C7161AF428E5F98900A941D1 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C7161AF328E5F98900A941D1 /* CocoaLumberjackSwift */; };
 		C7161AF728E625DB00A941D1 /* LogConsoleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AF628E625DB00A941D1 /* LogConsoleTableViewCell.swift */; };
 		C7161AF928E62FB400A941D1 /* LogConsoleMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AF828E62FB400A941D1 /* LogConsoleMessage.swift */; };
-		C7161AFC28E6BA7500A941D1 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AFB28E6BA7500A941D1 /* Logger.swift */; };
+		C7161AFC28E6BA7500A941D1 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AFB28E6BA7500A941D1 /* Log.swift */; };
 		C7161AFE28E6BA9B00A941D1 /* Loggable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161AFD28E6BA9B00A941D1 /* Loggable.swift */; };
 		C7161B0428E6BAED00A941D1 /* LogCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0328E6BAED00A941D1 /* LogCategory.swift */; };
 		C7161B0628E6C23F00A941D1 /* Loggable+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0528E6C23F00A941D1 /* Loggable+Extension.swift */; };
@@ -83,7 +83,7 @@
 		C2FC38E728D39A9E00A69358 /* PerformanceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceView.swift; sourceTree = "<group>"; };
 		C7161AF628E625DB00A941D1 /* LogConsoleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleTableViewCell.swift; sourceTree = "<group>"; };
 		C7161AF828E62FB400A941D1 /* LogConsoleMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleMessage.swift; sourceTree = "<group>"; };
-		C7161AFB28E6BA7500A941D1 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		C7161AFB28E6BA7500A941D1 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		C7161AFD28E6BA9B00A941D1 /* Loggable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loggable.swift; sourceTree = "<group>"; };
 		C7161B0328E6BAED00A941D1 /* LogCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogCategory.swift; sourceTree = "<group>"; };
 		C7161B0528E6C23F00A941D1 /* Loggable+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Loggable+Extension.swift"; sourceTree = "<group>"; };
@@ -226,7 +226,7 @@
 		C7161AFA28E6BA6100A941D1 /* Logger */ = {
 			isa = PBXGroup;
 			children = (
-				C7161AFB28E6BA7500A941D1 /* Logger.swift */,
+				C7161AFB28E6BA7500A941D1 /* Log.swift */,
 				C7161B0328E6BAED00A941D1 /* LogCategory.swift */,
 				C7161AFD28E6BA9B00A941D1 /* Loggable.swift */,
 				C7161B0528E6C23F00A941D1 /* Loggable+Extension.swift */,
@@ -407,7 +407,7 @@
 				C7161B0828E6C72B00A941D1 /* CustomDDOSLogger.swift in Sources */,
 				C2FC38E628D39A0F00A69358 /* PerformanceCalculator.swift in Sources */,
 				C2FC38D928D3094100A69358 /* MainWindow.swift in Sources */,
-				C7161AFC28E6BA7500A941D1 /* Logger.swift in Sources */,
+				C7161AFC28E6BA7500A941D1 /* Log.swift in Sources */,
 				C2FC38E428D399F400A69358 /* PerformanceMonitor.swift in Sources */,
 				C7161B0A28E6E84D00A941D1 /* LumberJackManager.swift in Sources */,
 				C7161B1328E773CE00A941D1 /* LogConsoleBottomContainerView.swift in Sources */,
