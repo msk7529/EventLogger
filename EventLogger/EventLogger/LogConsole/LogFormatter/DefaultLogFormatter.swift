@@ -7,6 +7,8 @@ import CocoaLumberjackSwift
 
 final class DefaultLogFormatter: BaseLogFormatter {
     
+    var useTimeStamp = false
+    
     override func configureDateFormatter(_ dateFormatter: DateFormatter) {
         dateFormatter.formatterBehavior = .behavior10_4
         dateFormatter.dateFormat = "MM-dd HH:mm:ss.SSS"
@@ -34,9 +36,10 @@ final class DefaultLogFormatter: BaseLogFormatter {
     override func format(message logMessage: DDLogMessage) -> String? {
         // xcode, 콘솔앱에 노출되는 로그 형식을 결정
         let logLevel = logFlagString(logFlag: logMessage.flag)
+        let timeStamp = useTimeStamp ? string(from: logMessage.timestamp) + " " : ""
         let isMainThread: Bool = logMessage.queueLabel.contains("main")
         
-        let headerString = "\(logLevel) |\(isMainThread ? "M" : "B")|"
+        let headerString = "\(logLevel) \(timeStamp) |\(isMainThread ? "M" : "B")|"
         var bodyString = logMessage.message
         
         if logMessage.message.isEmpty {
