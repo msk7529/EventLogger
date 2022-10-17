@@ -264,6 +264,15 @@ final public class LogConsoleViewController: UIViewController {
         switch buttonType {
         case .clear:
             viewModel.removeAllMessages()
+        case .more:
+            let alertControoler = UIAlertController(title: nil, message: "More", preferredStyle: .actionSheet)
+            let showLogFileAction = UIAlertAction(title: "Log Files", style: .default) { _ in
+                print("123")
+            }
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel)
+            alertControoler.addAction(showLogFileAction)
+            alertControoler.addAction(cancelAction)
+            view.window?.rootViewController?.present(alertControoler, animated: true)
         }
     }
 }

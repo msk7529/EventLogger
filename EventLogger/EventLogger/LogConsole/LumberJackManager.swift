@@ -27,5 +27,7 @@ final class LumberJackManager {
         DDLog.add(fileLogger, with: .debug)
         
         Log.info("log directory: \(LogFileManager.logFileDirectory)")
+        
+        LogFileManager.shared.removeOldLogFiles()
     }
 }
