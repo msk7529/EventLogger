@@ -11,12 +11,11 @@ final class MainWindow: UIWindow {
 
     private weak var prevRootViewController: UIViewController?
     
-    /*
     public var visibleViewController: UIViewController? {
         return self.visibleViewControllerFrom(vc: self.rootViewController)
     }
     
-    public func visibleViewControllerFrom(vc: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    public func visibleViewControllerFrom(vc: UIViewController?) -> UIViewController? {
         if let nc = vc as? UINavigationController {
             return self.visibleViewControllerFrom(vc: nc.visibleViewController)
         } else if let tc = vc as? UITabBarController {
@@ -29,7 +28,6 @@ final class MainWindow: UIWindow {
             }
         }
     }
-    */
     
     
     override func didAddSubview(_ subview: UIView) {

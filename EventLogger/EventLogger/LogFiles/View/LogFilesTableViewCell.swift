@@ -11,15 +11,15 @@ final class LogFilesTableViewCell: UITableViewCell {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
-        label.font = .systemFont(ofSize: 17)
+        label.textColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1)
+        label.font = .systemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let sizeLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = UIColor(red: 40.0 / 255.0, green: 108.0 / 255.0, blue: 214.0 / 255.0, alpha: 1.0)
         label.font = .systemFont(ofSize: 12)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -34,10 +34,18 @@ final class LogFilesTableViewCell: UITableViewCell {
     
     static let identifier = "LogFilesTableViewCell"
     
+    private var filePath: String {
+        LogFileManager.logFileDirectory.appending(pathComponent: fileName)  // 이 부분 그냥 LogFileManage에서 fileName 파라미터로 받아서 리턴하도록 해도 될 듯
+    }
+    
+    private var fileSize: String {
+        FileUtility.fileSizeString(with: FileUtility.fileSize(at: filePath))
+    }
+    
     var fileName: String = "" {
         didSet {
             nameLabel.text = fileName
-            sizeLabel.text = "123"
+            sizeLabel.text = fileSize
         }
     }
     

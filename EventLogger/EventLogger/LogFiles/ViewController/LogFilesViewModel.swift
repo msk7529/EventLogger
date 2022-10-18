@@ -28,4 +28,21 @@ final class LogFilesViewModel {
         snapShot.appendItems(logFilesList)
         dataSource.apply(snapShot)
     }
+    
+    func removeAllFiles() {
+        for file in logFilesList {
+            let filePath = LogFileManager.logFileDirectory.appending(pathComponent: file)
+            FileUtility.deleteFile(at: filePath)
+        }
+        
+        var snapShot = dataSource.snapshot()
+        snapShot.deleteAllItems()
+        dataSource.apply(snapShot)
+    }
+    
+    func createPreviewFileItem(at indexPath: IndexPath) -> PreviewFileItem? {
+        guard let fileName = dataSource.itemIdentifier(for: indexPath) else { return nil }
+        let filePath = URL(fileURLWithPath: LogFileManager.logFileDirectory).appendingPathComponent(fileName)
+        return PreviewFileItem(fileName: fileName, filePath: filePath)
+    }
 }

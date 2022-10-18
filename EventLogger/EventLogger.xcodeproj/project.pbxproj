@@ -43,6 +43,9 @@
 		C7161B0F28E6EC1300A941D1 /* DefaultLogFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */; };
 		C7161B1128E7576C00A941D1 /* LogConsoleTopContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */; };
 		C7161B1328E773CE00A941D1 /* LogConsoleBottomContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7161B1228E773CE00A941D1 /* LogConsoleBottomContainerView.swift */; };
+		C72204B228FE810B00223A13 /* FileUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72204B128FE810B00223A13 /* FileUtility.swift */; };
+		C72204B428FE942600223A13 /* FilePreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72204B328FE942600223A13 /* FilePreviewController.swift */; };
+		C72204B628FEA25900223A13 /* String+URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72204B528FEA25900223A13 /* String+URL.swift */; };
 		C7AA959428F5CAE900F99B3F /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959328F5CAE900F99B3F /* String+Subscript.swift */; };
 		C7AA959628F5CB4B00F99B3F /* String+Trimmed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */; };
 		C7AA959828F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959728F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift */; };
@@ -112,6 +115,9 @@
 		C7161B0E28E6EC1300A941D1 /* DefaultLogFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLogFormatter.swift; sourceTree = "<group>"; };
 		C7161B1028E7576C00A941D1 /* LogConsoleTopContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleTopContainerView.swift; sourceTree = "<group>"; };
 		C7161B1228E773CE00A941D1 /* LogConsoleBottomContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleBottomContainerView.swift; sourceTree = "<group>"; };
+		C72204B128FE810B00223A13 /* FileUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUtility.swift; sourceTree = "<group>"; };
+		C72204B328FE942600223A13 /* FilePreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePreviewController.swift; sourceTree = "<group>"; };
+		C72204B528FEA25900223A13 /* String+URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+URL.swift"; sourceTree = "<group>"; };
 		C7AA959328F5CAE900F99B3F /* String+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Subscript.swift"; sourceTree = "<group>"; };
 		C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Trimmed.swift"; sourceTree = "<group>"; };
 		C7AA959728F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleDateFormatterGenerator.swift; sourceTree = "<group>"; };
@@ -267,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				C708F91E28FDC6BD006AF7E4 /* LogFilesTableViewController.swift */,
+				C72204B328FE942600223A13 /* FilePreviewController.swift */,
 				C708F92528FDCB37006AF7E4 /* LogFilesTableViewDataSource.swift */,
 				C708F92728FDCC17006AF7E4 /* LogFilesViewModel.swift */,
 			);
@@ -319,10 +326,12 @@
 				C7AA959328F5CAE900F99B3F /* String+Subscript.swift */,
 				C7AA95A728F5CFB300F99B3F /* String+Size.swift */,
 				C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */,
+				C72204B528FEA25900223A13 /* String+URL.swift */,
 				C7AA959928F5CD5300F99B3F /* UIView+Gesture.swift */,
 				C7AA95A528F5CF4400F99B3F /* UILabel+Size.swift */,
 				C7AA959B28F5CD7400F99B3F /* LateInit.swift */,
 				C7AA95A128F5CDF600F99B3F /* Cache.swift */,
+				C72204B128FE810B00223A13 /* FileUtility.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -479,6 +488,7 @@
 				C2FC38E228D399D300A69358 /* LinkedFramesList.swift in Sources */,
 				C2FC38DB28D3119C00A69358 /* LogConsole.swift in Sources */,
 				C7161AFE28E6BA9B00A941D1 /* Loggable.swift in Sources */,
+				C72204B228FE810B00223A13 /* FileUtility.swift in Sources */,
 				C7161B1128E7576C00A941D1 /* LogConsoleTopContainerView.swift in Sources */,
 				C7161AF728E625DB00A941D1 /* LogConsoleTableViewCell.swift in Sources */,
 				C2FC38D528D2FC1900A69358 /* LogConsoleViewController.swift in Sources */,
@@ -494,6 +504,7 @@
 				C7AA95A428F5CEDC00F99B3F /* PaddingLabel.swift in Sources */,
 				C7161B1328E773CE00A941D1 /* LogConsoleBottomContainerView.swift in Sources */,
 				C2FC38E828D39A9E00A69358 /* PerformanceView.swift in Sources */,
+				C72204B628FEA25900223A13 /* String+URL.swift in Sources */,
 				C7AA959828F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift in Sources */,
 				C7161B0428E6BAED00A941D1 /* LogCategory.swift in Sources */,
 				C2FC38A528D2F9E300A69358 /* AppDelegate.swift in Sources */,
@@ -503,6 +514,7 @@
 				C7AA959A28F5CD5300F99B3F /* UIView+Gesture.swift in Sources */,
 				C2FC38A728D2F9E300A69358 /* SceneDelegate.swift in Sources */,
 				C708F91F28FDC6BD006AF7E4 /* LogFilesTableViewController.swift in Sources */,
+				C72204B428FE942600223A13 /* FilePreviewController.swift in Sources */,
 				C7AA95A028F5CDD600F99B3F /* LogConsoleTableViewDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

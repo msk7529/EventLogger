@@ -265,11 +265,12 @@ final public class LogConsoleViewController: UIViewController {
         case .clear:
             viewModel.removeAllMessages()
         case .more:
-            guard let rootVC = view.window?.rootViewController else { return }
+            guard let rootVC = (view?.window as? MainWindow)?.visibleViewController else { return }
             let alertControoler = UIAlertController(title: nil, message: "More", preferredStyle: .actionSheet)
             let showLogFileAction = UIAlertAction(title: "Log Files", style: .default) { _ in
-                let logFilesVC = LogFilesTableViewController()
-                rootVC.present(logFilesVC, animated: true)
+                let naviVC = UINavigationController(rootViewController: LogFilesTableViewController())
+                naviVC.modalPresentationStyle = .fullScreen
+                rootVC.present(naviVC, animated: true)
             }
             let cancelAction = UIAlertAction(title: "취소", style: .cancel)
             alertControoler.addAction(showLogFileAction)
