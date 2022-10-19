@@ -19,6 +19,8 @@ final public class LogConsole {
         }
         
         defer {
+            UIResponder.swizzleForMemoryTracking()
+            
             isRunning = true
             LogConsoleViewController.shared.viewModel.addLogMessages(logsBeforeStart)
             logsBeforeStart.removeAll()
