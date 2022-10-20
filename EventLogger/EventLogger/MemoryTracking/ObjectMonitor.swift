@@ -7,122 +7,81 @@
 
 import Foundation
 
-public struct LCObjectInfo {
-    public let typeName: String
-    public let aliasName: String?
+struct ObjectInfo {
+    let typeName: String
     private(set) weak var objectRef: AnyObject?
+    
+    init(object: AnyObject) {
+        self.objectRef = object
+        self.typeName = object.classForCoder?.description() ?? "nil"
+    }
 }
 
 final class ObjectMonitor {
-    typealias ObjectTable = [Int: LCObjectInfo]
+    
+    typealias ObjectTable = [Int: ObjectInfo]
 
-    var groupTable = [String: ObjectTable]()
+    private var groupTable = [String: ObjectTable]()
 
-    func objectTable(_ groupName: String) -> ObjectTable {
-//        if !LogConsole.isActivated {
-//            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
-//            return [:]
-//        }
-
-        var objectTable: ObjectTable?
-        //NSLock.synchronized(self) {
-            objectTable = groupTable[groupName]
-            if objectTable == nil {
-                objectTable = [:]
-                groupTable[groupName] = objectTable
-            }
-        //}
+    func objectTable(groupName: String) -> ObjectTable {
+        var objectTable = groupTable[groupName]
+        if objectTable == nil {
+            objectTable = [:]
+            groupTable[groupName] = objectTable
+        }
         return objectTable!
     }
 
-    func objectInfo(groupName: String, object: AnyObject) -> LCObjectInfo? {
-//        if !LogConsole.isActivated {
-//            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
-//            return nil
-//        }
-        let objectTable = objectTable(groupName)
-
+    func objectInfo(groupName: String, object: AnyObject) -> ObjectInfo? {
+        let objectTable = objectTable(groupName: groupName)
         return objectTable[object.hash]
     }
 
     func isExist(groupName: String, object: AnyObject) -> Bool {
-//        if !LogConsole.isActivated {
-//            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
-//            return false
-//        }
-
-        let objectTable = objectTable(groupName)
-
+        let objectTable = objectTable(groupName: groupName)
         return objectTable[object.hash] != nil
     }
 
-    func addObject(groupName: String, object: AnyObject, aliasName: String? = nil) {
-        let typeName = object.classForCoder.description()
-
-//        if !LogConsole.isActivated {
-//            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
-//            return
-//        }
-
-        //NSLock.synchronized(self) {
-            if var objectTable = groupTable[groupName] {
-                objectTable[object.hash] = LCObjectInfo(typeName: typeName, aliasName: aliasName, objectRef: object)
-                groupTable[groupName] = objectTable
-            }
-        //}
+    func addObject(groupName: String, object: AnyObject) {
+        guard var objectTable = groupTable[groupName] else {
+            return
+        }
+        objectTable[object.hash] = ObjectInfo(object: object)
+        groupTable[groupName] = objectTable
     }
 
     func removeObject(groupName: String, object: AnyObject) {
-//        if !LogConsole.isActivated {
-//            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
-//            return
-//        }
-
-        //NSLock.synchronized(self) {
-            if var objectTable = groupTable[groupName] {
-                objectTable.removeValue(forKey: object.hash)
-                groupTable[groupName] = objectTable
-            }
-        //}
+        guard var objectTable = groupTable[groupName] else {
+            return
+        }
+        objectTable.removeValue(forKey: object.hash)
+        groupTable[groupName] = objectTable
     }
 
-    func objectCount(_ groupName: String) -> Int {
-//        if !LogConsole.isActivated {
-//            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
-//            return 0
-//        }
-
-        let objectTable = self.objectTable(groupName)
+    func objectCount(groupName: String) -> Int {
+        let objectTable = objectTable(groupName: groupName)
         return objectTable.count
     }
 
     func checkOverflowObjectCount(group: String, count: Int) -> Bool {
-        let table = objectTable(group)
-
+        let objectTable = objectTable(groupName: group)
         var dictionary: [String: Int] = [:]
-        for info in table.values {
-            if let count = dictionary[info.typeName] {
-                dictionary[info.typeName] = count + 1
-            } else {
-                dictionary[info.typeName] = 1
-            }
+        
+        for objectInfo in objectTable.values {
+            dictionary[objectInfo.typeName, default: 0] += 1
         }
         return dictionary.filter { $0.1 > count }.count > 0
     }
 
     func description(group: String) -> String {
         var result = ""
-        let table = objectTable(group)
-
         var dictionary: [String: Int] = [:]
-        for info in table.values {
-            if let count = dictionary[info.typeName] {
-                dictionary[info.typeName] = count + 1
-            } else {
-                dictionary[info.typeName] = 1
-            }
+        let objectTable = objectTable(groupName: group)
+        
+        for objectInfo in objectTable.values {
+            dictionary[objectInfo.typeName, default: 0] += 1
         }
-
+        
         dictionary.sorted { $0.1 > $1.1 }.forEach {
             result += "- \($0.0) : \($0.1)\n"
         }

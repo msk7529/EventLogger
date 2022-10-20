@@ -7,109 +7,70 @@
 
 import UIKit
 
+enum TrackingGroupName: String {
+    case all = "ALL"
+    case vc = "VC"
+}
+
 final class AllocTracker {
     
     static let shared = AllocTracker()
-
-    private let allocTrackerGroupName: String = "AllocTracker"
+    
     let objectMonitor = ObjectMonitor()
 
     private init() { }
 
     func didInitObject(_ object: AnyObject) {
-        if objectMonitor.isExist(groupName: allocTrackerGroupName, object: object) {
+        guard !objectMonitor.isExist(groupName: TrackingGroupName.all.rawValue, object: object) else {
             return
         }
 
-        objectMonitor.addObject(groupName: allocTrackerGroupName, object: object)
+        objectMonitor.addObject(groupName: TrackingGroupName.all.rawValue, object: object)
 
         if let viewController = object as? UIViewController,
             !(viewController is UINavigationController) {
-            startMonitoringTalkViewController(object as! NSObject)
+            startMonitoringViewController(viewController)
         }
     }
 
     func didDeallocObject(_ object: NSObject) {
         let objectKey = object.classForCoder.description()
 
-        guard let objectInfo = objectMonitor.objectInfo(groupName: allocTrackerGroupName, object: object) else {
-            //Logger.warning("[ALLOC] didDeallocObject not found \(objectKey)")
+        guard let objectInfo = objectMonitor.objectInfo(groupName: TrackingGroupName.all.rawValue, object: object) else {
+            Log.warning("[ALLOC] didDeallocObject not found \(objectKey)")
             return
         }
 
         let orgObjectKey = objectInfo.typeName
         if orgObjectKey != objectKey {
-            //Logger.warning("[ALLOC] typeName changed \(orgObjectKey) -> \(objectKey)")
+            Log.warning("[ALLOC] typeName changed \(orgObjectKey) -> \(objectKey)")
         }
 
-        objectMonitor.removeObject(groupName: allocTrackerGroupName, object: object)
+        objectMonitor.removeObject(groupName: TrackingGroupName.all.rawValue, object: object)
 
         if let viewController = object as? UIViewController,
             !(viewController is UINavigationController) {
-            stopMonitoringTalkViewController(object)
+            stopMonitoringViewController(viewController)
         }
     }
 
-    func startMonitoringTalkViewController(_ object: NSObject) {
-        let groupName = "VC"
-        let maxCount = 30
-        objectMonitor.addObject(groupName: groupName, object: object)
-        // updateObjectCountView(groupName: groupName, dashboardItemName: groupName, maxCount: maxCount)
+    private func startMonitoringViewController(_ object: UIViewController) {
+        objectMonitor.addObject(groupName: TrackingGroupName.vc.rawValue, object: object)
 
-        // LCDebouncer.shared("startMonitoringTalkViewController", delay: 1) {
-            let count = objectMonitor.objectCount(groupName)
-            if count > 30 {
-                //Logger.error("[CONSOLE] 뷰컨트롤러 인스턴스 갯수가 \(maxCount)개 이상입니다. (\(count)개) 메모리 릭이 의심되면 로그콘솔 테스트 > Memory > testPrintAllViewController 를 실행하여 어떤 뷰컨트롤러가 누적되고 있는지 확인해 보세요.")
-            }
-
-            // if LogConsole.properties("Memory.testViewControllerAllocTracking") {
-                if objectMonitor.checkOverflowObjectCount(group: groupName, count: 5) {
-                    let string = objectMonitor.description(group: groupName)
-                    //Logger.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
-                    //Logger.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
-                    //Logger.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
-                }
-            // }
-
-        //}.call()
+        let count = objectMonitor.objectCount(groupName: TrackingGroupName.vc.rawValue)
+        if count > 30 {
+            Log.error("[CONSOLE] 뷰컨트롤러 인스턴스 갯수가 30개 이상입니다. (\(count)개) 메모리 릭이 발생하는지 확인해보세요.")
+        }
+        
+        if objectMonitor.checkOverflowObjectCount(group: TrackingGroupName.vc.rawValue, count: 5) {
+            let string = objectMonitor.description(group: TrackingGroupName.vc.rawValue)
+            Log.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
+            Log.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
+            Log.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
+        }
     }
 
-    func stopMonitoringTalkViewController(_ object: NSObject) {
-        objectMonitor.removeObject(groupName: "VC", object: object)
-        // updateObjectCountView(groupName: "VC", dashboardItemName: "VC", maxCount: 30)
+    private func stopMonitoringViewController(_ object: UIViewController) {
+        objectMonitor.removeObject(groupName: TrackingGroupName.vc.rawValue, object: object)
     }
-
-//    static private func updateObjectCountView(groupName: String, dashboardItemName: String, maxCount: Int) {
-//        let count = LCObjectMonitor.shared.objectCount(groupName)
-//
-//        if count > maxCount {
-//            LogConsole.setNetworkSessionState(key: dashboardItemName,
-//                                              state: .didConnect,
-//                                              error: true,
-//                                              sessionText: String(count))
-//
-//        } else if count == 0 {
-//            LogConsole.setNetworkSessionState(key: dashboardItemName,
-//                                              state: .didDisconnect,
-//                                              error: false,
-//                                              sessionText: "")
-//
-//        } else {
-//            LogConsole.setNetworkSessionState(key: dashboardItemName,
-//                                              state: .didConnect,
-//                                              error: false,
-//                                              sessionText: String(count))
-//        }
-//    }
-
-//    public static func startMonitoringChattingViewController(_ object: NSObject, aliasName: String) {
-//        LCObjectMonitor.shared.addObject(groupName: "CHAT", object: object, aliasName: aliasName)
-//        updateObjectCountView(groupName: "CHAT", dashboardItemName: "WAS", maxCount: 1)
-//    }
-//
-//    public static func stopMonitoringChattingViewController(_ object: NSObject) {
-//        LCObjectMonitor.shared.removeObject(groupName: "CHAT", object: object)
-//        updateObjectCountView(groupName: "CHAT", dashboardItemName: "WAS", maxCount: 1)
-//    }
-
 }

@@ -9,21 +9,20 @@ import UIKit
 
 final class MemoryTestCase {
     
-    private static var testObjectAllocTrackingLastAllocObjects: [String: Int]?
+    private var testObjectAllocTrackingLastAllocObjects: [String: Int]?
     
     func testObjectAllocTracking() {
-        let objectInfos = AllocTracker.shared.objectMonitor.objectTable("AllocTracker").values
+        let objectInfos = AllocTracker.shared.objectMonitor.objectTable(groupName: TrackingGroupName.all.rawValue).values
         var objectsCountDic = [String: Int]()
+        
         objectInfos.forEach { info in
             let count = objectsCountDic[info.typeName] ?? 0
             objectsCountDic[info.typeName] = count + 1
         }
 
-        let list = Array(objectsCountDic)
-        let sortedList = list.sorted { $0.1 > $1.1 }
+        let sortedList = Array(objectsCountDic).sorted { $0.1 > $1.1 }
 
         var logBody = ""
-
         var increaseCount = 0
         var decreaseCount = 0
         var total = 0
@@ -31,7 +30,7 @@ final class MemoryTestCase {
         for (key, count) in sortedList {
             total += count
 
-            let diff = count - (Self.testObjectAllocTrackingLastAllocObjects?[key] ?? 0)
+            let diff = count - (testObjectAllocTrackingLastAllocObjects?[key] ?? 0)
 
             if diff > 0 {
                 let diffLog = String(format: "%03d : %@ (+%d)\n", count, key, diff)
@@ -43,7 +42,7 @@ final class MemoryTestCase {
             }
         }
 
-        if let lastAllocObjects = Self.testObjectAllocTrackingLastAllocObjects {
+        if let lastAllocObjects = testObjectAllocTrackingLastAllocObjects {
             let lastList = Array(lastAllocObjects)
 
             for (key, lastCount) in lastList {
@@ -58,6 +57,6 @@ final class MemoryTestCase {
             }
         }
         Log.info("[ALLOC] 😎 Total : \(total) (+\(increaseCount)/-\(decreaseCount))\n\n\(logBody))")
-        Self.testObjectAllocTrackingLastAllocObjects = objectsCountDic
+        testObjectAllocTrackingLastAllocObjects = objectsCountDic
     }
 }
