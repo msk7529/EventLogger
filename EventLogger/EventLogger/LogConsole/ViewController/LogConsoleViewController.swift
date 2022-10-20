@@ -276,6 +276,8 @@ final public class LogConsoleViewController: UIViewController {
             alertControoler.addAction(showLogFileAction)
             alertControoler.addAction(cancelAction)
             rootVC.present(alertControoler, animated: true)
+        case .memoryTest:
+            viewModel.excuteMemoryTracking()
         }
     }
 }

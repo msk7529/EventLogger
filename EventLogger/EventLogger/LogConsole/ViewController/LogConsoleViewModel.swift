@@ -22,6 +22,8 @@ final class LogConsoleViewModel {
     private let expandedMessageHeightCache = Cache<UUID, CGFloat>()
     var isBindCompleted = false
     
+    private let memoryTestCase = MemoryTestCase()
+    
     init(dataSource: LogConsoleTableViewDataSource) {
         self.dataSource = dataSource
         
@@ -75,6 +77,12 @@ final class LogConsoleViewModel {
             expandedMessageHeightCache.insert(height, forKey: message.uuid)
             return height
         }
+    }
+    
+    // MARK: - Memory
+    
+    func excuteMemoryTracking() {
+        memoryTestCase.testObjectAllocTracking()
     }
 }
 
