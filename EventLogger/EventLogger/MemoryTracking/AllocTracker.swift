@@ -7,45 +7,14 @@
 
 import UIKit
 
-public class AllocTracker: NSObject {
-    public static let sharedInstance = AllocTracker()
+final class AllocTracker {
+    static let shared = AllocTracker()
 
     private let allocTrackerGroupName: String = "AllocTracker"
 
-    private lazy var prefixFilterList: [String] = {
-        return ["UI", "_UI", "NS", "TalkSharedBase.LC"]
-    }()
+    private init() { }
 
-    private lazy var targetList: [AnyClass] = {
-        return [UIViewController.self, UIView.self]
-    }()
-
-    private override init() {
-        super.init()
-    }
-
-    public func isTarget(byType classType: AnyClass) -> Bool {
-        for targetType in targetList {
-            if classType.isSubclass(of: targetType) {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    public func isTarget(byClassName className: String) -> Bool {
-        for filter in prefixFilterList {
-            if className.hasPrefix(filter) {
-                return false
-            }
-        }
-
-        return true
-    }
-
-    public func didInitObject(_ object: AnyObject) {
-        #if DEBUG
+    func didInitObject(_ object: AnyObject) {
         if ObjectMonitor.shared.isExist(groupName: allocTrackerGroupName, object: object) {
             return
         }
@@ -56,13 +25,11 @@ public class AllocTracker: NSObject {
             !(viewController is UINavigationController) {
             Self.startMonitoringTalkViewController(object as! NSObject)
         }
-        #endif
     }
 
-    public func didDeallocObject(_ object: NSObject) {
+    func didDeallocObject(_ object: NSObject) {
         let objectKey = object.classForCoder.description()
 
-        #if DEBUG
         guard let objectInfo = ObjectMonitor.shared.objectInfo(groupName: allocTrackerGroupName, object: object) else {
             //Logger.warning("[ALLOC] didDeallocObject not found \(objectKey)")
             return
@@ -79,8 +46,6 @@ public class AllocTracker: NSObject {
             !(viewController is UINavigationController) {
             Self.stopMonitoringTalkViewController(object)
         }
-
-        #endif
     }
 
     static func startMonitoringTalkViewController(_ object: NSObject) {
