@@ -12,7 +12,7 @@ final class MemoryTestCase {
     private static var testObjectAllocTrackingLastAllocObjects: [String: Int]?
     
     func testObjectAllocTracking() {
-        let objectInfos = ObjectMonitor.shared.objectTable("AllocTracker").values
+        let objectInfos = AllocTracker.shared.objectMonitor.objectTable("AllocTracker").values
         var objectsCountDic = [String: Int]()
         objectInfos.forEach { info in
             let count = objectsCountDic[info.typeName] ?? 0

@@ -8,29 +8,31 @@
 import UIKit
 
 final class AllocTracker {
+    
     static let shared = AllocTracker()
 
     private let allocTrackerGroupName: String = "AllocTracker"
+    let objectMonitor = ObjectMonitor()
 
     private init() { }
 
     func didInitObject(_ object: AnyObject) {
-        if ObjectMonitor.shared.isExist(groupName: allocTrackerGroupName, object: object) {
+        if objectMonitor.isExist(groupName: allocTrackerGroupName, object: object) {
             return
         }
 
-        ObjectMonitor.shared.addObject(groupName: allocTrackerGroupName, object: object)
+        objectMonitor.addObject(groupName: allocTrackerGroupName, object: object)
 
         if let viewController = object as? UIViewController,
             !(viewController is UINavigationController) {
-            Self.startMonitoringTalkViewController(object as! NSObject)
+            startMonitoringTalkViewController(object as! NSObject)
         }
     }
 
     func didDeallocObject(_ object: NSObject) {
         let objectKey = object.classForCoder.description()
 
-        guard let objectInfo = ObjectMonitor.shared.objectInfo(groupName: allocTrackerGroupName, object: object) else {
+        guard let objectInfo = objectMonitor.objectInfo(groupName: allocTrackerGroupName, object: object) else {
             //Logger.warning("[ALLOC] didDeallocObject not found \(objectKey)")
             return
         }
@@ -40,29 +42,29 @@ final class AllocTracker {
             //Logger.warning("[ALLOC] typeName changed \(orgObjectKey) -> \(objectKey)")
         }
 
-        ObjectMonitor.shared.removeObject(groupName: allocTrackerGroupName, object: object)
+        objectMonitor.removeObject(groupName: allocTrackerGroupName, object: object)
 
         if let viewController = object as? UIViewController,
             !(viewController is UINavigationController) {
-            Self.stopMonitoringTalkViewController(object)
+            stopMonitoringTalkViewController(object)
         }
     }
 
-    static func startMonitoringTalkViewController(_ object: NSObject) {
+    func startMonitoringTalkViewController(_ object: NSObject) {
         let groupName = "VC"
         let maxCount = 30
-        ObjectMonitor.shared.addObject(groupName: groupName, object: object)
+        objectMonitor.addObject(groupName: groupName, object: object)
         // updateObjectCountView(groupName: groupName, dashboardItemName: groupName, maxCount: maxCount)
 
         // LCDebouncer.shared("startMonitoringTalkViewController", delay: 1) {
-            let count = ObjectMonitor.shared.objectCount(groupName)
+            let count = objectMonitor.objectCount(groupName)
             if count > 30 {
                 //Logger.error("[CONSOLE] 뷰컨트롤러 인스턴스 갯수가 \(maxCount)개 이상입니다. (\(count)개) 메모리 릭이 의심되면 로그콘솔 테스트 > Memory > testPrintAllViewController 를 실행하여 어떤 뷰컨트롤러가 누적되고 있는지 확인해 보세요.")
             }
 
             // if LogConsole.properties("Memory.testViewControllerAllocTracking") {
-                if ObjectMonitor.shared.checkOverflowObjectCount(group: groupName, count: 5) {
-                    let string = ObjectMonitor.shared.description(group: groupName)
+                if objectMonitor.checkOverflowObjectCount(group: groupName, count: 5) {
+                    let string = objectMonitor.description(group: groupName)
                     //Logger.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
                     //Logger.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
                     //Logger.error("[CONSOLE] 특정 VC가 누적되고 있음!!!\n\n\(string)")
@@ -72,8 +74,8 @@ final class AllocTracker {
         //}.call()
     }
 
-    static func stopMonitoringTalkViewController(_ object: NSObject) {
-        ObjectMonitor.shared.removeObject(groupName: "VC", object: object)
+    func stopMonitoringTalkViewController(_ object: NSObject) {
+        objectMonitor.removeObject(groupName: "VC", object: object)
         // updateObjectCountView(groupName: "VC", dashboardItemName: "VC", maxCount: 30)
     }
 

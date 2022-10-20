@@ -13,14 +13,12 @@ public struct LCObjectInfo {
     private(set) weak var objectRef: AnyObject?
 }
 
-public class ObjectMonitor: NSObject {
-    public typealias ObjectTable = [Int: LCObjectInfo]
+final class ObjectMonitor {
+    typealias ObjectTable = [Int: LCObjectInfo]
 
-    public static let shared = ObjectMonitor()
+    var groupTable = [String: ObjectTable]()
 
-    public var groupTable = [String: ObjectTable]()
-
-    public func objectTable(_ groupName: String) -> ObjectTable {
+    func objectTable(_ groupName: String) -> ObjectTable {
 //        if !LogConsole.isActivated {
 //            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
 //            return [:]
@@ -37,7 +35,7 @@ public class ObjectMonitor: NSObject {
         return objectTable!
     }
 
-    public func objectInfo(groupName: String, object: AnyObject) -> LCObjectInfo? {
+    func objectInfo(groupName: String, object: AnyObject) -> LCObjectInfo? {
 //        if !LogConsole.isActivated {
 //            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
 //            return nil
@@ -47,7 +45,7 @@ public class ObjectMonitor: NSObject {
         return objectTable[object.hash]
     }
 
-    public func isExist(groupName: String, object: AnyObject) -> Bool {
+    func isExist(groupName: String, object: AnyObject) -> Bool {
 //        if !LogConsole.isActivated {
 //            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
 //            return false
@@ -58,7 +56,7 @@ public class ObjectMonitor: NSObject {
         return objectTable[object.hash] != nil
     }
 
-    public func addObject(groupName: String, object: AnyObject, aliasName: String? = nil) {
+    func addObject(groupName: String, object: AnyObject, aliasName: String? = nil) {
         let typeName = object.classForCoder.description()
 
 //        if !LogConsole.isActivated {
@@ -74,7 +72,7 @@ public class ObjectMonitor: NSObject {
         //}
     }
 
-    public func removeObject(groupName: String, object: AnyObject) {
+    func removeObject(groupName: String, object: AnyObject) {
 //        if !LogConsole.isActivated {
 //            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
 //            return
@@ -88,7 +86,7 @@ public class ObjectMonitor: NSObject {
         //}
     }
 
-    public func objectCount(_ groupName: String) -> Int {
+    func objectCount(_ groupName: String) -> Int {
 //        if !LogConsole.isActivated {
 //            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
 //            return 0
@@ -98,31 +96,7 @@ public class ObjectMonitor: NSObject {
         return objectTable.count
     }
 
-    public override var debugDescription: String {
-//        if !LogConsole.isActivated {
-//            LogConsole.error("[LogConsole] LCObjectMonitor error (not activated)")
-//            return "error"
-//        }
-
-        var description = ""
-
-        for (groupName, objectTable) in groupTable {
-            description.append("\(groupName) : \(objectTable.count)\n")
-        }
-
-        description.append("----------------------------\n")
-        for (groupName, objectTable) in groupTable {
-            description.append("\n")
-
-            for key in objectTable.keys {
-                description.append("\(groupName) ; \(key) ; \(objectTable[key]?.typeName ?? "-")\n")
-            }
-        }
-
-        return description
-    }
-
-    public func checkOverflowObjectCount(group: String, count: Int) -> Bool {
+    func checkOverflowObjectCount(group: String, count: Int) -> Bool {
         let table = objectTable(group)
 
         var dictionary: [String: Int] = [:]
@@ -136,7 +110,7 @@ public class ObjectMonitor: NSObject {
         return dictionary.filter { $0.1 > count }.count > 0
     }
 
-    public func description(group: String) -> String {
+    func description(group: String) -> String {
         var result = ""
         let table = objectTable(group)
 
