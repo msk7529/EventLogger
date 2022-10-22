@@ -12,6 +12,7 @@ final class LogConsoleViewModel {
     @Published var expandModePos = CGPoint(x: 20, y: 200)
     @Published var viewMode = LogConsoleViewMode.mini
     @Published private(set) var logMessageUpdated: Void = ()
+    @Published private(set) var watchDogStatus: WatchDog.Status = .off
     
     var lastLogMessageIndexPath: IndexPath? {
         let totalCount = dataSource.snapshot().numberOfItems
@@ -23,6 +24,8 @@ final class LogConsoleViewModel {
     var isBindCompleted = false
     
     private let memoryTestCase = MemoryTestCase()
+    
+    private var watchDog: WatchDog?
     
     init(dataSource: LogConsoleTableViewDataSource) {
         self.dataSource = dataSource
@@ -83,6 +86,13 @@ final class LogConsoleViewModel {
     
     func excuteMemoryTracking() {
         memoryTestCase.testObjectAllocTracking()
+    }
+    
+    // MARK: - WatchDog
+    
+    func toggleWatchDogStatus() {
+        watchDog = watchDog == nil ? WatchDog() : nil
+        watchDogStatus.toggle()
     }
 }
 

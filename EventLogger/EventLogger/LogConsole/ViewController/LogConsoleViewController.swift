@@ -14,8 +14,8 @@ final public class LogConsoleViewController: UIViewController {
     
     private lazy var topContainerView: LogConsoleTopContainerView = {
         let view = LogConsoleTopContainerView()
-        view.addTapHandler { [weak self] in
-            self?.viewModel.viewMode.toggle()
+        view.didTapButton = { [weak self] buttonType in
+            self?.didTapTopContainerButton(buttonType: buttonType)
         }
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -153,6 +153,11 @@ final public class LogConsoleViewController: UIViewController {
                 self?.scrollToBottom()
             }.store(in: &subscriptions)
         
+        viewModel.$watchDogStatus
+            .sink { [weak self] status in
+                self?.topContainerView.watchDogStatus = status
+            }.store(in: &subscriptions)
+        
         viewModel.isBindCompleted = true
     }
 
@@ -279,6 +284,15 @@ final public class LogConsoleViewController: UIViewController {
             rootVC.present(alertControoler, animated: true)
         case .memoryTest:
             viewModel.excuteMemoryTracking()
+        }
+    }
+    
+    private func didTapTopContainerButton(buttonType: LogConsoleTopContainerView.ButtonType) {
+        switch buttonType {
+        case .performance:
+            viewModel.viewMode.toggle()
+        case .monitor:
+            viewModel.toggleWatchDogStatus()
         }
     }
 }

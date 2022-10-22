@@ -50,6 +50,7 @@
 		C72204F828FF11B800223A13 /* ObjectMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72204F728FF11B800223A13 /* ObjectMonitor.swift */; };
 		C72205292900776C00223A13 /* UIResponder+Swizzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C72205282900776C00223A13 /* UIResponder+Swizzle.swift */; };
 		C722052B29008A3500223A13 /* MemoryTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C722052A29008A3500223A13 /* MemoryTestCase.swift */; };
+		C722052E290442A800223A13 /* WatchDog.swift in Sources */ = {isa = PBXBuildFile; fileRef = C722052D290442A800223A13 /* WatchDog.swift */; };
 		C7AA959428F5CAE900F99B3F /* String+Subscript.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959328F5CAE900F99B3F /* String+Subscript.swift */; };
 		C7AA959628F5CB4B00F99B3F /* String+Trimmed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */; };
 		C7AA959828F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AA959728F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift */; };
@@ -126,6 +127,7 @@
 		C72204F728FF11B800223A13 /* ObjectMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectMonitor.swift; sourceTree = "<group>"; };
 		C72205282900776C00223A13 /* UIResponder+Swizzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIResponder+Swizzle.swift"; sourceTree = "<group>"; };
 		C722052A29008A3500223A13 /* MemoryTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryTestCase.swift; sourceTree = "<group>"; };
+		C722052D290442A800223A13 /* WatchDog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchDog.swift; sourceTree = "<group>"; };
 		C7AA959328F5CAE900F99B3F /* String+Subscript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Subscript.swift"; sourceTree = "<group>"; };
 		C7AA959528F5CB4B00F99B3F /* String+Trimmed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Trimmed.swift"; sourceTree = "<group>"; };
 		C7AA959728F5CCE500F99B3F /* LogConsoleDateFormatterGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogConsoleDateFormatterGenerator.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				C2FC38D628D2FC4300A69358 /* LogConsole */,
 				C708F91C28FDC660006AF7E4 /* LogFiles */,
 				C72204F428FF118E00223A13 /* MemoryTracking */,
+				C722052C2904429200223A13 /* WatchDog */,
 				C2FC38AD28D2F9E400A69358 /* Assets.xcassets */,
 				C2FC38AF28D2F9E400A69358 /* LaunchScreen.storyboard */,
 				C2FC38B228D2F9E400A69358 /* Info.plist */,
@@ -338,6 +341,14 @@
 				C72205282900776C00223A13 /* UIResponder+Swizzle.swift */,
 			);
 			path = MemoryTracking;
+			sourceTree = "<group>";
+		};
+		C722052C2904429200223A13 /* WatchDog */ = {
+			isa = PBXGroup;
+			children = (
+				C722052D290442A800223A13 /* WatchDog.swift */,
+			);
+			path = WatchDog;
 			sourceTree = "<group>";
 		};
 		C7AA959228F5CADC00F99B3F /* Utility */ = {
@@ -515,6 +526,7 @@
 				C7161B0D28E6EB1A00A941D1 /* BaseLogFormatter.swift in Sources */,
 				C2FC38DD28D3337E00A69358 /* TestViewController.swift in Sources */,
 				C7161B0F28E6EC1300A941D1 /* DefaultLogFormatter.swift in Sources */,
+				C722052E290442A800223A13 /* WatchDog.swift in Sources */,
 				C7161AF928E62FB400A941D1 /* LogConsoleMessage.swift in Sources */,
 				C7AA95A828F5CFB300F99B3F /* String+Size.swift in Sources */,
 				C2FC38A928D2F9E300A69358 /* MainViewController.swift in Sources */,

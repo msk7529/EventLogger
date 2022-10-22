@@ -7,10 +7,18 @@ import UIKit
 
 final class LogConsoleTopContainerView: UIView {
     
+    enum ButtonType {
+        case performance
+        case monitor
+    }
+    
     // MARK: - Properties
     
-    private let performanceView: PerformanceView = {
+    private lazy var performanceView: PerformanceView = {
         let view = PerformanceView()
+        view.addTapHandler { [weak self] in
+            self?.didTapButton?(.performance)
+        }
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -19,6 +27,9 @@ final class LogConsoleTopContainerView: UIView {
         let button = UIButton()
         button.setImage(UIImage(named: "monitor"), for: .normal)
         button.isHidden = true
+        button.addAction(UIAction(handler: { [weak self] _ in
+            self?.didTapButton?(.monitor)
+        }), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -26,11 +37,20 @@ final class LogConsoleTopContainerView: UIView {
     private let monitorStatusLabel: UILabel = {
         let label = UILabel()
         label.text = "OFF"
-        label.font = .systemFont(ofSize: 8)
+        label.font = .boldSystemFont(ofSize: 8)
+        label.textColor = .white
         label.isHidden = true
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    var watchDogStatus: WatchDog.Status = .off {
+        didSet {
+            monitorStatusLabel.text = watchDogStatus == .off ? "OFF" : "O N"
+        }
+    }
+    
+    var didTapButton: ((ButtonType) -> Void)?
     
     // MARK: - Life Cycle
     
