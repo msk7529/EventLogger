@@ -7,12 +7,12 @@
 
 import UIKit
 
-enum TrackingGroupName: String {
-    case all = "ALL"
-    case vc = "VC"
-}
-
 final class AllocTracker {
+    
+    enum TrackingGroupName: String {
+        case all = "ALL"
+        case vc = "VC"
+    }
     
     static let shared = AllocTracker()
     
