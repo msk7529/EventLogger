@@ -212,6 +212,7 @@ final public class LogConsoleViewController: UIViewController {
             self.tableViewBottomConstraint?.constant = viewMode == .mini ? 0 : -LogConsoleBottomContainerView.height
             self.logTableView.isHidden = viewMode == .mini ? true : false
             self.bottomContainerView.isHidden = viewMode == .mini ? true : false
+            self.topContainerView.changeViewMode(to: viewMode)
             superView.layoutIfNeeded()  // 미호출시 애니메이션 적용 안 됨
         } completion: { _ in
             if viewMode == .expanded {
